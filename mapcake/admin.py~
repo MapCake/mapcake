@@ -1,0 +1,7 @@
+from django.contrib.gis import admin
+from models import Sources
+from models import Layers
+from models import Maps
+from models import Atlases
+
+admin.site.register(Atlases, admin.GeoModelAdmin)

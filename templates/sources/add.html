@@ -1,0 +1,186 @@
+<html>
+	<head>
+		<script src="http://openlayers.org/dev/OpenLayers.js"></script>
+		<script type="text/javascript">
+			var map = new OpenLayers.Map('map');
+			function initMap()
+			{
+				var app, items = [], controls = [];
+
+
+				if (map != null) map.destroy();
+				map = new OpenLayers.Map('map');
+			
+{% if  lstLayers %}
+						var {{fondDePlan.id}} = new OpenLayers.Layer.WMS(
+							"{{fondDePlan.nom}}",
+							"{{url}}",
+							{layers: '{{fondDePlan.nom}}'},
+							{isBaseLayer: true}
+						);
+						map.addLayer({{fondDePlan.id}});
+
+                    {% for layer in lstLayers %}
+                        var {{layer.id}} = new OpenLayers.Layer.WMS(
+                            "{{layer.nom}}",
+                            "{{url}}",
+                            {layers: '{{layer.nom}}', transparent:'true'},
+                            {visibility:false, isBaseLayer: false}
+                        );
+                        map.addLayer({{layer.id}});
+                    {% endfor %}
+                    map.addControl(new OpenLayers.Control.MousePosition);
+
+{%endif %}
+				{% if  lon %}
+				map.setCenter(new OpenLayers.LonLat({{lon}},{{lat}}));
+				{% endif %}
+			}
+
+			// Affiche une couche a l aide de son nom
+			function showLayer(element)
+			{
+				var layer = map.getLayersByName(element.value);
+				var currentElem = layer[0];
+				map.zoomToExtent(currentElem.getDataExtent());
+				currentElem.setVisibility( element.checked);
+				currentElem.redraw(true);
+			}
+
+			function Affiche()
+		    {
+		        var selection = document.getElementById('id_type').value;
+		        var afficherFile = document.getElementById('file');
+		        if(selection == "file")
+		        {
+		            afficherFile.style.display = "block";
+		        }
+		        else
+		        {
+		            afficherFile.style.display = "none";
+		        }
+
+		        var afficherbdd = document.getElementById('bdd');
+		        if(selection == "bdd")
+		        {
+		            afficherbdd.style.display = "block";
+		        }
+		        else
+		        {
+		            afficherbdd.style.display = "none";
+		        }
+
+
+		        var afficherFile = document.getElementById('service');
+		        if(selection == "services")
+		        {
+		            afficherFile.style.display = "block";
+		        }
+		        else
+		        {
+		            afficherFile.style.display = "none";
+		        }
+		        initMap();
+		    }
+		</script>
+	</head>
+
+	<h1>Nouvelle source</h1>
+	<body onload = 'javascript:Affiche();'>
+
+		{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+		<!-- TODO 
+		utiliser les forms from models:
+		https://docs.djangoproject.com/en/1.2/topics/forms/modelforms/
+		  -->
+		<form method = 'post' >	
+			{{ form.non_field_errors }}
+			<table>
+				<tr>
+					<td> <label for ="name"> Nom </label> </td>
+					<td>{{formSource.titre}}</td>
+					<td>{{ formSource.titre.errors }}</td>
+				</tr>
+				<tr>
+					<td><label for ="type">Type</label></td>
+					<td>{{formSource.type}}</td>
+					<td>{{ formSource.type.errors }}</td>
+				</tr>
+			</table>
+
+
+			<table id = "file">
+				<tr><td colspan="2"><h2>Connexion vers un fichier </h2></td></tr>
+				<tr>
+					<td>File</td>
+					<td>
+						<input type="file"/>
+					</td>
+				</tr>
+			</table>
+			<table id ="service">
+				{% csrf_token %}
+				<tr><td colspan="2"><h2>Connexion vers un service </h2></td></tr>
+				<tr>			
+					<td><label for ="url">URL</label></td>
+					<td>{{formSource.url}}</td>
+					<td><input type = "submit" /> </td>
+					<td>{{ formSource.url.errors }}</td>
+
+				</tr>
+				<!-- http://openlayers.org/dev/examples/layerswitcher.html
+				ou http://georezo.net/forum/viewtopic.php?id=81057-->
+				{% if  lstLayers %}
+					{% for layer in lstLayers %}
+						<tr><td><input name="layerSelected"
+						 value="{{layer.nom}}" type="checkbox" onClick='showLayer(this);'>{{layer.nom}}: {{layer.boundingBox}}
+						</input></td></tr>
+							<tr><td><ol>
+								{% for style in layer.lstStyles %}
+									<tr><td>
+										{{style.titre}}
+									</td></tr>
+									<tr><td>
+										<img src="{{style.url}}" alt="" style="border:none;"/>
+									</td></tr>
+								{% endfor %}
+							</ol>
+						</td></tr>
+					{% endfor %}
+				{%endif %}
+			</table>
+
+			<table id="bdd">
+				<tr><td colspan="2"><h2>Connexion vers une base de données </h2></td></tr>
+				<tr>
+					<td><label for="connection">Select connection</label></td>
+					<td>
+						<select name = "connection">
+							<option>Postgres/Postgis</option>
+							<option>Oracle/Spatial</option>
+							<option>Services/Spatial</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="server">SERVER</label></td>
+					<td><input type="text" name="server"/></td>
+				</tr>
+				<tr>
+					<td><label for="port">PORT</lable></td>
+					<td><input type="text" name="port"/></td>
+				</tr>
+				<tr>
+					<td><label for="username">Username</label></td>
+					<td><input type="text" name="username"/></td>
+				</tr>
+				<tr>
+					<td><label for="password">Password</label></td>
+					<td><input type="password" name="password"/></td>
+				</tr>
+			</table>	
+			<input type="submit" name="enregistrer" value="Enregistrer"/>
+		</form>
+		<div id="map" style="width:512px; height:256px;"/>
+	</body>
+</html>

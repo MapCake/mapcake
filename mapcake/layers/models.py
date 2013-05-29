@@ -105,7 +105,7 @@ class Atlases(models.Model):
 
 # les tables de liaison
 
-
+# faire la correction
 class AtlasesMaps(models.Model):
     id = models.ForeignKey(Maps, primary_key=True, db_column='id')
     atlas = models.ForeignKey(Atlases)
@@ -118,8 +118,8 @@ class AtlasesMaps(models.Model):
 
 class LayersMaps(models.Model):
     id = models.IntegerField(primary_key=True)
-    map_id = models.ForeignKey(Maps, db_column='id')
-    layer_id = models.ForeignKey(Layers, db_column='id')
+    map_id = models.ForeignKey(Maps, db_column='map_id')
+    layer_id = models.ForeignKey(Layers, db_column='layer_id')
 
     class Meta:
         db_table = u'layers_maps'

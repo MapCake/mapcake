@@ -3,7 +3,8 @@ from owslib.wms import WebMapService
 from django.template import RequestContext
 from models import Sources, Users
 from formsAdd import LayersForm, SourcesForm
-from structure import LayerServices
+from structure import LayerServices, LayerTable
+import psycopg2
 
 # voir http://docs.django-fr.org/intro/tutorial04.html#intro-tutorial04
 
@@ -64,23 +65,28 @@ def source_add(request):
                 'sources/add.html',
                 {'formSource': formSource, 'error_message': True},
                 context_instance=RequestContext(request))
-        if not ('enregistrer' in request.POST):
-            return getLayersForSource(request, formSource)
-    if (formSource.is_valid() and
-        (request.method == 'POST') and
-        ('enregistrer' in request.POST)):
-        print "formulaire valide"
-        #enregistrement des sources
-        baliseLayer = 'layerSelected'
-        #print request.body
-        lstLayersString = ""
-        if (baliseLayer in request.POST):
-            # a reprendre chercher django checkbox
-            lstLayersString = ";".join(request.POST.getlist(baliseLayer))
-        currentSource = formSource.save(commit=False)
-        currentSource.source = lstLayersString
-        currentSource.save()
-        return redirect("/sources/index")
+        if  ('EnvService' in request.POST):
+            # on reaffiche le service
+            return getLayersForService(request, formSource)
+        else:
+            if('EnvBase' in request.POST):
+                getLayersForDatabase(request, formSource)
+
+            else:
+                if ('enregistrer' in request.POST):
+                    print "formulaire valide"
+                    #enregistrement des sources
+                    baliseLayer = 'layerSelected'
+                    #print request.body
+                    lstLayersString = ""
+                    if (baliseLayer in request.POST):
+                        # a reprendre chercher django checkbox
+                        lstLayersString = ";".join(
+                            request.POST.getlist(baliseLayer))
+                    currentSource = formSource.save(commit=False)
+                    currentSource.source = lstLayersString
+                    currentSource.save()
+                    return redirect("/sources/index")
     else:
         print "%s" % repr(formSource.errors)
         print request.body
@@ -91,26 +97,59 @@ def source_add(request):
 
 # recupere les layers pour une source a l'aide l'url de la requete
 #Regenere le formulaire formSource pour en tenir compte
-def getLayersForSource(request, formSource):
+def getLayersForService(request, formSource):
     name = None
     lon = None
     lat = None
     url = request.POST['url']
     # url = 'http://www.cartociudad.es/wms/CARTOCIUDAD/CARTOCIUDAD?'
     wms = WebMapService(url, version='1.1.1')
-    lstLayers = []
+    lstLayersService = []
     for currentLayer in wms.contents:
-        lstLayers.append(LayerServices(wms, currentLayer))
+        lstLayersService.append(LayerServices(wms, currentLayer))
 
-    fondDePlan = lstLayers[0]
+    fondDePlan = lstLayersService[0]
     tabCoor = calculLonLatLayer(url)
     lon = tabCoor[0]
     lat = tabCoor[1]
     return render_to_response(
         'sources/add.html',
         {'formSource': formSource,
-        'url': url, 'lstLayers': lstLayers, 'fondDePlan': fondDePlan,
+        'url': url, 'lstLayersService': lstLayersService,
+        'fondDePlan': fondDePlan,
         'name': name, 'lon': lon, 'lat': lat},
+        context_instance=RequestContext(request))
+
+
+# Return the layers from an access to a database
+def getLayersForDatabase(request, formSource):
+    port = request.POST['port']
+    host = request.POST['server']
+    base = request.POST['base']
+    userName = request.POST['username']
+    password = request.POST['password']
+    connect = psycopg2.connect(
+        host=host, database=base, user=userName, port=port, password=password)
+    lstLayersTable = []
+    requestAllTables = \
+        "SELECT tablename FROM pg_tables WHERE tablename !~ '^pg_';"
+    print 'requestAllTables'
+    print requestAllTables
+    cursor = connect.cursor()
+    cursor.execute(requestAllTables)
+    tables = cursor.fetchall()
+    print tables
+    for currentNameTable in tables:
+        currentTable = LayerTable(cursor, currentNameTable[0])
+        if (currentTable.geoJSon is not None):
+            lstLayersTable.append(currentTable)
+    print 'tables'
+    print tables
+
+    return render_to_response(
+        'sources/add.html',
+        {'formSource': formSource,
+         'lstLayersTable': lstLayersTable},
         context_instance=RequestContext(request))
 
 

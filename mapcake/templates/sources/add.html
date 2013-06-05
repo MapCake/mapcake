@@ -11,7 +11,7 @@
 				if (map != null) map.destroy();
 				map = new OpenLayers.Map('map');
 			
-{% if  lstLayers %}
+{% if  lstLayersService %}
 						var {{fondDePlan.id}} = new OpenLayers.Layer.WMS(
 							"{{fondDePlan.nom}}",
 							"{{url}}",
@@ -20,7 +20,7 @@
 						);
 						map.addLayer({{fondDePlan.id}});
 
-                    {% for layer in lstLayers %}
+                    {% for layer in lstLayersService %}
                         var {{layer.id}} = new OpenLayers.Layer.WMS(
                             "{{layer.nom}}",
                             "{{url}}",
@@ -29,13 +29,22 @@
                         );
                         map.addLayer({{layer.id}});
                     {% endfor %}
-                    map.addControl(new OpenLayers.Control.MousePosition);
-                    map.addControl(new OpenLayers.Control.PanZoomBar());
-
 {%endif %}
 				{% if  lon %}
 				map.setCenter(new OpenLayers.LonLat({{lon}},{{lat}}));
 				{% endif %}
+
+
+				{%if lstLayersTable %}
+					{% for layer in lstLayersTable %}
+						var {{layer.id}}Formatter = new OpenLayers.Format.GeoJSON();
+						var {{layer.id}} = new OpenLayers.Layer.Vector();
+						map.addLayer({{layer.id}});
+						{{layer.id}}.addFeatures(geojson_format.read{{layer.geoJSon}})
+					{% endfor %}
+				{%endif %}
+				map.addControl(new OpenLayers.Control.MousePosition);
+                map.addControl(new OpenLayers.Control.PanZoomBar());
 			}
 
 			// Affiche une couche a l aide de son nom
@@ -100,7 +109,7 @@
 				<tr>
 					<td> <label for ="name"> Nom </label> </td>
 					<td>{{formSource.titre}}</td>
-					<td>{{ formSource.titre.errors }}</td>
+					<td>{{formSource.titre.errors }}</td>
 				</tr>
 				<tr>
 					<td><label for ="type">Type</label></td>
@@ -125,14 +134,14 @@
 				<tr>			
 					<td><label for ="url">URL</label></td>
 					<td>{{formSource.url}}</td>
-					<td><input type = "submit" /> </td>
+					<td><input type = "submit" name="EnvService" /> </td>
 					<td>{{ formSource.url.errors }}</td>
 
 				</tr>
 				<!-- http://openlayers.org/dev/examples/layerswitcher.html
 				ou http://georezo.net/forum/viewtopic.php?id=81057-->
-				{% if  lstLayers %}
-					{% for layer in lstLayers %}
+				{% if  lstLayersService %}
+					{% for layer in lstLayersService %}
 						<tr><td><input name="layerSelected"
 						 value="{{layer.nom}}" type="checkbox" onClick='showLayer(this);'>{{layer.nom}}: {{layer.boundingBox}}
 						</input></td></tr>
@@ -159,7 +168,6 @@
 						<select name = "connection">
 							<option>Postgres/Postgis</option>
 							<option>Oracle/Spatial</option>
-							<option>Services/Spatial</option>
 						</select>
 					</td>
 				</tr>
@@ -172,6 +180,10 @@
 					<td><input type="text" name="port"/></td>
 				</tr>
 				<tr>
+					<td><label for="base">Base</lable></td>
+					<td><input type="text" name="base"/></td>
+				</tr>
+				<tr>
 					<td><label for="username">Username</label></td>
 					<td><input type="text" name="username"/></td>
 				</tr>
@@ -179,6 +191,17 @@
 					<td><label for="password">Password</label></td>
 					<td><input type="password" name="password"/></td>
 				</tr>
+				<td><input type = "submit" name="EnvBase" /> 
+
+				{% if  lstLayersTable %}
+					{% for table in lstLayersTable %}
+						<tr><td><input name="layerSelected"
+						 value="{{layer.nom}}" type="checkbox" onClick='showLayer(this);'>{{layer.nom}}
+						</input></td></tr>
+					{% endfor %}
+				{%endif %}
+
+
 			</table>	
 			<input type="submit" name="enregistrer" value="Enregistrer"/>
 		</form>

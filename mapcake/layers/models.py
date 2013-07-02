@@ -105,6 +105,7 @@ class Atlases(models.Model):
 
 # les tables de liaison
 
+
 # faire la correction
 class AtlasesMaps(models.Model):
     id = models.ForeignKey(Maps, primary_key=True, db_column='id')

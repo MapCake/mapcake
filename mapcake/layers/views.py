@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response, redirect
 from owslib.wms import WebMapService
 from django.template import RequestContext
 from models import Sources, Users
-from formsAdd import LayersForm, SourcesForm
+from formsAdd import LayersForm, SourcesForm, TYPE_SOURCE, FIELD_TYPE
 from structure import LayerServices, LayerTable
 import psycopg2
 
@@ -70,23 +70,12 @@ def source_add(request):
             return getLayersForService(request, formSource)
         else:
             if('EnvBase' in request.POST):
-                getLayersForDatabase(request, formSource)
+                return getLayersForDatabase(request, formSource)
 
             else:
                 if ('enregistrer' in request.POST):
-                    print "formulaire valide"
-                    #enregistrement des sources
-                    baliseLayer = 'layerSelected'
-                    #print request.body
-                    lstLayersString = ""
-                    if (baliseLayer in request.POST):
-                        # a reprendre chercher django checkbox
-                        lstLayersString = ";".join(
-                            request.POST.getlist(baliseLayer))
-                    currentSource = formSource.save(commit=False)
-                    currentSource.source = lstLayersString
-                    currentSource.save()
-                    return redirect("/sources/index")
+                    if (TYPE_SOURCE[2][0] in request.POST[FIELD_TYPE]):
+                        return saveLayersForService(request, formSource)
     else:
         print "%s" % repr(formSource.errors)
         print request.body
@@ -95,7 +84,24 @@ def source_add(request):
         context_instance=RequestContext(request))
 
 
-# recupere les layers pour une source a l'aide l'url de la requete
+#Sauvegarde d'une couche pour un servcie
+def  saveLayersForService(request, formSource):
+    #enregistrement des sources
+    baliseLayer = 'layerSelected'
+    #print request.body
+    lstLayersString = ""
+    # a reprendre chercher django checkbox
+    lstLayersString = ";".join(
+        request.POST.getlist(baliseLayer))
+    currentSource = formSource.save(commit=False)
+    currentSource.source = lstLayersString
+    currentSource.save()
+
+    print "sauvegarde avec succes"
+    return redirect("/sources/index")
+
+
+#Recupere les layers pour une source a l'aide l'url de la requete
 #Regenere le formulaire formSource pour en tenir compte
 def getLayersForService(request, formSource):
     name = None
@@ -108,7 +114,6 @@ def getLayersForService(request, formSource):
     for currentLayer in wms.contents:
         lstLayersService.append(LayerServices(wms, currentLayer))
 
-    fondDePlan = lstLayersService[0]
     tabCoor = calculLonLatLayer(url)
     lon = tabCoor[0]
     lat = tabCoor[1]
@@ -116,7 +121,6 @@ def getLayersForService(request, formSource):
         'sources/add.html',
         {'formSource': formSource,
         'url': url, 'lstLayersService': lstLayersService,
-        'fondDePlan': fondDePlan,
         'name': name, 'lon': lon, 'lat': lat},
         context_instance=RequestContext(request))
 
@@ -133,18 +137,13 @@ def getLayersForDatabase(request, formSource):
     lstLayersTable = []
     requestAllTables = \
         "SELECT tablename FROM pg_tables WHERE tablename !~ '^pg_';"
-    print 'requestAllTables'
-    print requestAllTables
     cursor = connect.cursor()
     cursor.execute(requestAllTables)
     tables = cursor.fetchall()
-    print tables
     for currentNameTable in tables:
         currentTable = LayerTable(cursor, currentNameTable[0])
-        if (currentTable.geoJSon is not None):
+        if (currentTable.geoJSonTab is not None):
             lstLayersTable.append(currentTable)
-    print 'tables'
-    print tables
 
     return render_to_response(
         'sources/add.html',

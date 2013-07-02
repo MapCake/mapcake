@@ -11,6 +11,8 @@ TYPE_SOURCE = (
     ('bdd', 'B.B.D.D.'),
     ('services', 'Services'))
 
+FIELD_TYPE = 'type'
+
 
 class SourcesForm(ModelForm):
     class Meta:

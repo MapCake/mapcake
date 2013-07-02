@@ -11,20 +11,17 @@
 				if (map != null) map.destroy();
 				map = new OpenLayers.Map('map');
 			
+				var layer = new OpenLayers.Layer.WMS( "OpenLayers WMS",
+						"http://vmap0.tiles.osgeo.org/wms/vmap0",
+						{layers: 'basic'} ); 
+						map.addLayer(layer);
 {% if  lstLayersService %}
-						var {{fondDePlan.id}} = new OpenLayers.Layer.WMS(
-							"{{fondDePlan.nom}}",
-							"{{url}}",
-							{layers: '{{fondDePlan.nom}}'},
-							{isBaseLayer: true}
-						);
-						map.addLayer({{fondDePlan.id}});
 
                     {% for layer in lstLayersService %}
                         var {{layer.id}} = new OpenLayers.Layer.WMS(
-                            "{{layer.nom}}",
+                            "{{layer.name}}",
                             "{{url}}",
-                            {layers: '{{layer.nom}}', transparent:'true'},
+                            {layers: '{{layer.name}}', transparent:'true'},
                             {visibility:false, isBaseLayer: false}
                         );
                         map.addLayer({{layer.id}});
@@ -36,15 +33,27 @@
 
 
 				{%if lstLayersTable %}
+					var geojson_format = new OpenLayers.Format.GeoJSON({
+                		'internalProjection': new OpenLayers.Projection("EPSG:4326"),
+                		'externalProjection': new OpenLayers.Projection("EPSG:4326")
+            			});
 					{% for layer in lstLayersTable %}
 						var {{layer.id}}Formatter = new OpenLayers.Format.GeoJSON();
 						var {{layer.id}} = new OpenLayers.Layer.Vector();
+						{{layer.id}}.name = "{{layer.id}}";
 						map.addLayer({{layer.id}});
-						{{layer.id}}.addFeatures(geojson_format.read{{layer.geoJSon}})
+						 {{layer.id}}.setVisibility(false);
+
+						{% autoescape off %}
+							{% for geoJSon in layer.geoJSonTab %}
+								{{layer.id}}.addFeatures(geojson_format.read({{geoJSon}}))
+							{% endfor%}
+						{% endautoescape %}
 					{% endfor %}
 				{%endif %}
 				map.addControl(new OpenLayers.Control.MousePosition);
                 map.addControl(new OpenLayers.Control.PanZoomBar());
+                map.zoomToMaxExtent();
 			}
 
 			// Affiche une couche a l aide de son nom
@@ -52,10 +61,10 @@
 			{
 				var layer = map.getLayersByName(element.value);
 				var currentElem = layer[0];
-				map.zoomToExtent(currentElem.getDataExtent());
 				currentElem.setVisibility( element.checked);
 				currentElem.redraw(true);
 			}
+
 
 			function Affiche()
 		    {
@@ -93,6 +102,7 @@
 		        initMap();
 		    }
 		</script>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	</head>
 
 	<h1>Nouvelle source</h1>
@@ -143,7 +153,7 @@
 				{% if  lstLayersService %}
 					{% for layer in lstLayersService %}
 						<tr><td><input name="layerSelected"
-						 value="{{layer.nom}}" type="checkbox" onClick='showLayer(this);'>{{layer.nom}}: {{layer.boundingBox}}
+						 value="{{layer.name}}" type="checkbox" onClick='showLayer(this);'>{{layer.name}}: {{layer.boundingBox}}
 						</input></td></tr>
 							<tr><td><ol>
 								{% for style in layer.lstStyles %}
@@ -176,11 +186,11 @@
 					<td><input type="text" name="server"/></td>
 				</tr>
 				<tr>
-					<td><label for="port">PORT</lable></td>
+					<td><label for="port">PORT</label></td>
 					<td><input type="text" name="port"/></td>
 				</tr>
 				<tr>
-					<td><label for="base">Base</lable></td>
+					<td><label for="base">Base</label></td>
 					<td><input type="text" name="base"/></td>
 				</tr>
 				<tr>
@@ -189,15 +199,15 @@
 				</tr>
 				<tr>
 					<td><label for="password">Password</label></td>
-					<td><input type="password" name="password"/></td>
+					<td><input type="password" name="password"></input></td>
 				</tr>
 				<td><input type = "submit" name="EnvBase" /> 
 
 				{% if  lstLayersTable %}
 					{% for table in lstLayersTable %}
 						<tr><td><input name="layerSelected"
-						 value="{{layer.nom}}" type="checkbox" onClick='showLayer(this);'>{{layer.nom}}
-						</input></td></tr>
+						 value="{{table.name}}" type="checkbox" onClick='showLayer(this);'>{{table.name}}
+						</input>  </td></tr>
 					{% endfor %}
 				{%endif %}
 

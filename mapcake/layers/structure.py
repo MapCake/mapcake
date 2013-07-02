@@ -1,6 +1,7 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*
 from psycopg2.extensions import AsIs
+from django.contrib.gis.gdal import DataSource
 
 """TODO faire tests unitaires"""
 
@@ -16,7 +17,7 @@ caracteresReservesJavaScript = [" ", "-", ".", '"', "'", "@",
 class LayerServices:
     def __init__(self, wms, nom):
         self.wms = wms
-        self.nom = nom
+        self.name = nom
         self.id = nom
         for currentCaractere in caracteresReservesJavaScript:
             self.id = self.id.replace(currentCaractere, '__')
@@ -33,7 +34,7 @@ class LayerServices:
 
 class LayerStyle:
     def __init__(self, nom, currentElemStyle):
-        self.nom = nom
+        self.name = nom
         self.titre = currentElemStyle['title']
         self.url = currentElemStyle['legend']
 
@@ -45,11 +46,9 @@ class LayerTable:
     def __init__(self, cursor, name):
         self.name = str(name)
         self.id = self.name
-        print 'name'
-        print name
         for currentCaractere in caracteresReservesJavaScript:
             self.id = self.id.replace(currentCaractere, '__')
-        self.geoJSon = None
+        self.geoJSonTab = None
         # get name of the geometry column
         cursor.execute(
             "SELECT f_geometry_column FROM geometry_columns WHERE f_table_name  = \'%s\'",
@@ -57,9 +56,23 @@ class LayerTable:
         if (cursor.rowcount > 0):
             nameColumn = cursor.fetchone()
             nameColumn = str(nameColumn[0])
-            print "Name column"
-            print nameColumn
             cursor.execute(
-                "SELECT ST_AsGeoJSON(%s) FROM %s",
+                "SELECT ST_AsGeoJSON(%s) FROM %s LIMIT 1000",
                 (AsIs(nameColumn), AsIs(self.name)))
-            self.geoJSon = cursor.fetchone()
+            # ST_AsGeoJSON retourne une seule element par tuple
+            self.geoJSonTab = []
+            row = cursor.fetchone()
+            while row is not None:
+                self.geoJSonTab.append(row[0])
+                row = cursor.fetchone()
+
+
+###Layer for a Shapefile
+class LayerShape:
+    def __init__(self, cursor, name):
+        self.name = name
+        ds = DataSource(self.name)
+        # shapefiles are only allowed to have one layer
+        lyr = ds[0]
+        
+

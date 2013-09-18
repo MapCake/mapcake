@@ -10,22 +10,8 @@
 # into your database.
 
 from django.contrib.gis.db import models
-
-
-class Users(models.Model):
-    id = models.IntegerField(primary_key=True)
-    username = models.CharField(max_length=64, unique=True)
-    name = models.CharField(max_length=128, blank=True)
-    surname = models.CharField(max_length=256, blank=True)
-    email = models.CharField(max_length=256)
-    password = models.CharField(max_length=512)
-    group_id = models.IntegerField()
-    created = models.TimeField()
-    modified = models.TimeField(null=True, blank=True)
-
-    class Meta:
-        db_table = u'users'
-
+from map.models import Maps
+from account.models import Users
 
 class Types(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -69,52 +55,9 @@ class Layers(models.Model):
     class Meta:
         db_table = u'layers'
 
-
-class Groups(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=256)
-    modified = models.TimeField(null=True, blank=True)
-    created = models.TimeField()
-
-    class Meta:
-        db_table = u'groups'
-
-
-class Maps(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=128, unique=True)
-    abstract = models.TextField(blank=True)
-    createdby = models.ForeignKey(Users, db_column='createdby')
-    created = models.DateTimeField(null=True, blank=True)
-    modified = models.DateTimeField(null=True, blank=True)
-
-    class Meta:
-        db_table = u'maps'
-
-
-class Atlases(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=128, unique=True)
-    abstract = models.TextField(blank=True)
-    createdby = models.ForeignKey(Users, db_column='createdby')
-    created = models.DateTimeField(null=True, blank=True)
-    modified = models.DateTimeField(null=True, blank=True)
-
-    class Meta:
-        db_table = u'atlases'
-
 # les tables de liaison
 
 
-# faire la correction
-class AtlasesMaps(models.Model):
-    id = models.ForeignKey(Maps, primary_key=True, db_column='id')
-    atlas = models.ForeignKey(Atlases)
-    map_id = models.BigIntegerField()
-
-    class Meta:
-        managed = False
-        db_table = u'atlases_maps'
 
 
 class LayersMaps(models.Model):

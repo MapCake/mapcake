@@ -1,0 +1,14 @@
+{% if latestSourceList %}
+    <ul>
+    {% for source in latestSourceList %}
+        <li><a href="./{{source.id}}">{{ source.titre }}</a>
+            <a href="./{{source.id}}/delete">delete</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Aucune source n'est disponible.</p>
+{% endif %}
+<ul>
+<a href="./add"> Add </a>
+</ul>

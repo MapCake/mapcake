@@ -1,6 +1,8 @@
+<!DOCTYPE html > 
 <html>
 	<head>
-		<script src="http://openlayers.org/dev/OpenLayers.js"></script>
+	    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>
 		<script type="text/javascript">
 			var map = new OpenLayers.Map('map');
 			function initMap()
@@ -102,12 +104,11 @@
 		        initMap();
 		    }
 		</script>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title> Add a source</title>
 	</head>
 
-	<h1>Nouvelle source</h1>
 	<body onload = 'javascript:Affiche();'>
-
+		<h1>Nouvelle source</h1>
 		{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 		<!-- TODO 
 		utiliser les forms from models:
@@ -120,6 +121,11 @@
 					<td> <label for ="name"> Nom </label> </td>
 					<td>{{formSource.titre}}</td>
 					<td>{{formSource.titre.errors }}</td>
+				</tr>
+				<tr>
+					<td> <label for ="abstract"> Abstract </label> </td>
+					<td>{{formSource.abstract}}</td>
+					<td>{{formSource.abstract.errors }}</td>
 				</tr>
 				<tr>
 					<td><label for ="type">Type</label></td>
@@ -139,7 +145,7 @@
 				</tr>
 			</table>
 			<table id ="service">
-				{% csrf_token %}
+				<tr><td>{% csrf_token %}</td></tr>
 				<tr><td colspan="2"><h2>Connexion vers un service </h2></td></tr>
 				<tr>			
 					<td><label for ="url">URL</label></td>
@@ -201,7 +207,7 @@
 					<td><label for="password">Password</label></td>
 					<td><input type="password" name="password"></input></td>
 				</tr>
-				<td><input type = "submit" name="EnvBase" /> 
+				<tr><td><input type = "submit" name="EnvBase" /></td></tr>
 
 				{% if  lstLayersTable %}
 					{% for table in lstLayersTable %}

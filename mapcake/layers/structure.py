@@ -14,12 +14,12 @@ caracteresReservesJavaScript = [" ", "-", ".", '"', "'", "@",
                                 "[", "]", "{", "}", "#", "&", "|", "`", "^",
                                 "¨", "€"]
 
-
 class LayerServices:
     def __init__(self, wms, nom):
         self.wms = wms
         self.name = nom
-        self.id = nom
+        self.id = nom.decode('utf-8')
+        self.id = self.id.encode("ascii", "ignore")
         for currentCaractere in caracteresReservesJavaScript:
             self.id = self.id.replace(currentCaractere, '__')
         self.boundingBox = wms[nom].boundingBoxWGS84

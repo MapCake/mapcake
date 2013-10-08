@@ -6,7 +6,6 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    url(r'^layers/add', views.layer_add, name='layer_add'),
     url(r'^sources/add', views.source_add, name='add'),
     url(r'^sources/index', views.source_index, name='source_index'),
     url(r'^sources/(?P<source_id>\d+)/delete', views.source_delete, name='source_delete'),

@@ -1,5 +1,8 @@
 from django.contrib.gis import admin
-from models import Sources, Layers,Maps, Atlases
+from models import Sources, Layers
+from map.models import Maps
+from atlas.models import Atlases
+from layers.models import Sources
 
 
 

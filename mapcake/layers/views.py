@@ -1,15 +1,29 @@
 from django.shortcuts import render_to_response, redirect
+from django.core.context_processors import csrf
 from owslib.wms import WebMapService
 from django.template import RequestContext
-from models import Sources, Users
+from models import Sources
+from django.contrib.auth.models import User
 from formsAdd import LayersForm, SourcesForm, TYPE_SOURCE, FIELD_TYPE
 from structure import LayerServices, LayerTable
 import psycopg2
+from userena import views
 
 # voir http://docs.django-fr.org/intro/tutorial04.html#intro-tutorial04
 
 
-def source_index(request):
+def source_index(request):    
+    print request.method
+    c = {}
+    c.update(csrf(request))
+    if (request.method =='POST'):
+        print request
+        if ("login" in request.POST):
+            print 'test'
+            return userena.views.signup(request, template_name='accounts/signup_form.html',extra_context=c)
+        if ("signin" in request.POST):
+            return userena.views.signin(request, template_name='account/login.html', extra_context=c)
+    
     latestSourceList = Sources.objects.all()
     return render_to_response(
         'sources/index.html',
@@ -45,7 +59,7 @@ def layer_add(request):
     if formLayer.is_valid():
         currentLayer = formLayer.save(commit=False)
         currentLayer.source = Sources.objects.get(id=1)
-        currentLayer.user = Users.objects.get(id=1)
+        currentLayer.user = User.objects.get(id=1)
         currentLayer.save()
         return redirect(currentLayer)
     return render_to_response(

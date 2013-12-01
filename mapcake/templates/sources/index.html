@@ -12,6 +12,21 @@
     <link href="{% static "css/mapcake.css" %}" rel="stylesheet" media="screen">
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src= "{% static "js/bootstrap/js/bootstrap.min.js" %}"></script>
+    <script>
+    function connect()
+    {
+	    webmaster= moi;
+	    xhr = new XMLHttpRequest();
+      	xhr.open('POST', 'userena.signin');
+        //Don't forget to add the csrftoken protection in the header
+        xhr.setRequestHeader("X-CSRFToken",'{{csrf_token}}');
+        //Prepare data to send if needed
+        var data = new FormData();
+            data.append('username', webmaster);
+        //Send data
+        xhr.send(data);
+       }
+    </script>
 
 </head>
   <body>
@@ -53,27 +68,32 @@
           <div class="well">
           <!-- REGISTRATION BLOCK FOR PUBLIC VIEW
           ================================================== -->
-          <form class="form-login">
+          <form class="form-login" method='post'>
+            {% csrf_token %}
             <input type="text" class="input-block-level" placeholder="Username or email" required>
             <input type="password" class="input-block-level" placeholder="Password" required>
             <label class="checkbox">
               <input type="checkbox" value="remember-me"> Remember me
             </label>
-            <!--This button must redirect to a user account page if the authentication it's ok-->
-            <button class="btn .btn-mini btn-info" type="submit">Sig in</button>
+            <!--This button must redirect to a user account page if the authentication is ok-->
+            <!-- <button class="btn .btn-mini btn-info" name="login" type="submit">Sign in</button>-->
+            <button class="btn .btn-mini btn-info" name="signin" onclick="connect()">Sign in</button>
+            
           </form>
 
-          <form class="form-signin">
+          <form class="form-signin" method='post'>
+          	{% csrf_token %}
             <h4 class="form-signin-heading">New on Mapcake? Sign up for free</h4>
             <input type="text" class="input-block-level" placeholder="Full name">
             <input type="text" class="input-block-level" placeholder="Email">
             <input type="password" class="input-block-level" placeholder="Password">
             <!--This button must redirect to a registration page with the content of the fields if the user tipe somme fileds-->
-            <button class="btn .btn-mini btn-info" type="submit">Sign up for Mapcake</button>
+          <!--   <button class="btn .btn-mini btn-info" name="signin" type="submit">Sign up for Mapcake</button>-->
+           <button class="btn .btn-mini btn-info" name="signin" onclick="connect()">Sign up for Mapcake</button>
           </form>
           </div><!-- /.well -->
         </div><!-- /.span -->
-          <!-- This collum must be list of last public layers added to the platform -->
+          <!-- This column must be list of last public layers added to the platform -->
         {% if latestSourceList %}
         	<div class="span9">
           		<div class="row-fluid">

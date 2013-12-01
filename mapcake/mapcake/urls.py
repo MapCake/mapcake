@@ -17,4 +17,5 @@ urlpatterns = patterns('',
    ## (r'^layers/(?P<poll_id>\d+)/results/$', 'mapcake.views.results'),
    ## (r'^layers/(?P<poll_id>\d+)/vote/$', 'mapcake.views.vote'),
     (r'^admin/', include(admin.site.urls)),
+    (r'^account/', include('userena.urls')),  
 )

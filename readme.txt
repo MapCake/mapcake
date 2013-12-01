@@ -19,7 +19,7 @@ OWSLib-0.7.1-py2.7.egg-info    tests
 pep8-1.4.5-py2.7.egg-info      yolk
 pep8.py                        yolk-0.4.3-py2.7.egg-info
 gdal
-
+django-userena
 
 
 Mettre à jour le contenu de la balise DATABASES du fichier mapCake\mapCake\settings.py.

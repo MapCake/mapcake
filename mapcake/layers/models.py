@@ -11,7 +11,7 @@
 
 from django.contrib.gis.db import models
 from map.models import Maps
-from account.models import Users
+from django.contrib.auth.models import User
 
 class Types(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -36,7 +36,7 @@ class Sources(models.Model):
     url = models.TextField(blank=True, db_column='url')
 
     createdby = models.ForeignKey(
-        Users, null=True, db_column='createdby', blank=True, editable=False)
+        User, null=True, db_column='createdby', blank=True, editable=False)
     creation_date = models.DateTimeField(
         null=True, blank=True, editable=False, auto_now_add=True)
     modification_date = models.DateTimeField(

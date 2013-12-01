@@ -15,7 +15,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'mapcake',                      # Or path to database file if using sqlite3.
         'USER': 'postgres',                      # Not used with sqlite3.
-        'PASSWORD': 'zomadic',                  # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -125,11 +125,15 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'atlas',
-    'account',
     'layers',
     'map',
     # Uncomment for production
     'debug_toolbar',
+    #userena and dependancies
+    'userena',
+    'guardian',
+    'easy_thumbnails',
+    'account',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -207,4 +211,23 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 
+# settings for authentification
+AUTHENTICATION_BACKENDS = (
+    'userena.backends.UserenaAuthenticationBackend',
+    'guardian.backends.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
+ANONYMOUS_USER_ID = -1  
+
+AUTH_PROFILE_MODULE = 'account.ProfileMapcake'  
+  
+LOGIN_REDIRECT_URL = '/accounts/%(username)s/'  
+LOGIN_URL = '/accounts/signin/'  
+LOGOUT_URL = '/accounts/signout/'  
+
+EMAIL_USE_TLS = True  
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_PORT = 587  
+EMAIL_HOST_USER = ''  
+EMAIL_HOST_PASSWORD = ''  

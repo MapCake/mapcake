@@ -2,9 +2,9 @@ from django.shortcuts import render_to_response, redirect
 from django.core.context_processors import csrf
 from owslib.wms import WebMapService
 from django.template import RequestContext
-from models import Sources
+from models import Layers
 from django.contrib.auth.models import User
-from formsAdd import LayersForm, SourcesForm, TYPE_SOURCE, FIELD_TYPE
+from formsAdd import LayersForm, TYPE_SOURCE, FIELD_TYPE
 from structure import LayerServices, LayerTable
 import psycopg2
 from userena import views
@@ -12,7 +12,7 @@ from userena import views
 # voir http://docs.django-fr.org/intro/tutorial04.html#intro-tutorial04
 
 
-def source_index(request):    
+def layer_index(request):    
     print request.method
     c = {}
     c.update(csrf(request))
@@ -24,51 +24,39 @@ def source_index(request):
         if ("signin" in request.POST):
             return userena.views.signin(request, template_name='account/login.html', extra_context=c)
     
-    latestSourceList = Sources.objects.all()
+    latestSourceList = Layers.objects.all()
     return render_to_response(
-        'sources/index.html',
+        'layers/index.html',
         {'latestSourceList': latestSourceList})
 
 
-def source_detail(request, source_id):
-    source = Sources.objects.get(pk=source_id)
-    wms = WebMapService(source.url, version='1.1.1')
+def layer_detail(request, source_id):
+    layer = Layers.objects.get(pk=source_id)
+    wms = WebMapService(layer.url, version='1.1.1')
     lstLayers = list(wms.contents)
     fondDePlan = lstLayers[0]
-    tabCoor = calculLonLatLayer(source.url)
+    tabCoor = calculLonLatLayer(layer.url)
     lon = tabCoor[0]
     lat = tabCoor[1]
-    lstNamesLayers = source.source.split(";")
+    lstNamesLayers = layer.source.split(";")
     lstLayers = []
     for currentName in lstNamesLayers:
         lstLayers.append(LayerServices(wms, currentName))
     return render_to_response(
-        'sources/detail.html',
-        {'source': source, 'lstLayers': lstLayers,
+        'layers/detail.html',
+        {'layer': layer,
         'lon': lon, 'lat': lat, 'fondDePlan': fondDePlan})
 
 
-def source_delete(request, source_id):
-    source = Sources.objects.get(pk=source_id)
+def layer_delete(request, source_id):
+    source = Layers.objects.get(pk=source_id)
     source.delete()
-    return redirect("/sources/index")
+    return redirect("/layers/index")
+
 
 
 def layer_add(request):
-    formLayer = LayersForm(request.POST or None)
-    if formLayer.is_valid():
-        currentLayer = formLayer.save(commit=False)
-        currentLayer.source = Sources.objects.get(id=1)
-        currentLayer.user = User.objects.get(id=1)
-        currentLayer.save()
-        return redirect(currentLayer)
-    return render_to_response(
-        'layers/add.html', {'formLayer': formLayer},
-        context_instance=RequestContext(request))
-
-
-def source_add(request):
-    formSource = SourcesForm(request.POST or None)
+    formSource = LayersForm(request.POST or None)
     if (request.method == 'POST'):
        # print request.body
         # le formulaire n'est pas valide
@@ -76,7 +64,7 @@ def source_add(request):
             # un enregistrement a ete demande
             #print formSource.errors
             return render_to_response(
-                'sources/add.html',
+                'layers/add.html',
                 {'formSource': formSource, 'error_message': True},
                 context_instance=RequestContext(request))
         if  ('EnvService' in request.POST):
@@ -94,7 +82,7 @@ def source_add(request):
         print "%s" % repr(formSource.errors)
         print request.body
     return render_to_response(
-        'sources/add.html', {'formSource': formSource},
+        'layers/add.html', {'formSource': formSource},
         context_instance=RequestContext(request))
 
 
@@ -112,7 +100,7 @@ def  saveLayersForService(request, formSource):
     currentSource.save()
 
     print "sauvegarde avec succes"
-    return redirect("/sources/index")
+    return redirect("/layers/index")
 
 
 #Recupere les layers pour une source a l'aide l'url de la requete
@@ -132,7 +120,7 @@ def getLayersForService(request, formSource):
     lon = tabCoor[0]
     lat = tabCoor[1]
     return render_to_response(
-        'sources/add.html',
+        'layers/add.html',
         {'formSource': formSource,
         'url': url, 'lstLayersService': lstLayersService,
         'name': name, 'lon': lon, 'lat': lat},
@@ -160,7 +148,7 @@ def getLayersForDatabase(request, formSource):
             lstLayersTable.append(currentTable)
 
     return render_to_response(
-        'sources/add.html',
+        'layers/add.html',
         {'formSource': formSource,
          'lstLayersTable': lstLayersTable},
         context_instance=RequestContext(request))

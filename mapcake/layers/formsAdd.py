@@ -1,10 +1,6 @@
 from django.forms import ModelForm, Select, TextInput
-from models import Layers, Sources
+from models import Layers
 
-
-class LayersForm(ModelForm):
-    class Meta:
-        model = Layers
 
 TYPE_SOURCE = (
     ('file', 'File'),
@@ -14,9 +10,9 @@ TYPE_SOURCE = (
 FIELD_TYPE = 'type'
 
 
-class SourcesForm(ModelForm):
+class LayersForm(ModelForm):
     class Meta:
-        model = Sources
+        model = Layers
         widgets = {
             'type': Select(
             choices=TYPE_SOURCE, attrs={'onchange': 'javascript:Affiche()'}),

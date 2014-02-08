@@ -15,7 +15,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'mapcake',                      # Or path to database file if using sqlite3.
         'USER': 'postgres',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
+        'PASSWORD': 'zomadic',                  # Not used with sqlite3.
         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -127,13 +127,14 @@ INSTALLED_APPS = (
     'atlas',
     'layers',
     'map',
+    'home',
     # Uncomment for production
     'debug_toolbar',
     #userena and dependancies
     'userena',
     'guardian',
     'easy_thumbnails',
-    'account',
+    'accounts',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -220,14 +221,14 @@ AUTHENTICATION_BACKENDS = (
 
 ANONYMOUS_USER_ID = -1  
 
-AUTH_PROFILE_MODULE = 'account.ProfileMapcake'  
+AUTH_PROFILE_MODULE = 'accounts.ProfileMapcake'  
   
 LOGIN_REDIRECT_URL = '/accounts/%(username)s/'  
 LOGIN_URL = '/accounts/signin/'  
-LOGOUT_URL = '/accounts/signout/'  
+LOGOUT_URL = '/' 
 
 EMAIL_USE_TLS = True  
 EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_PORT = 587  
-EMAIL_HOST_USER = ''  
-EMAIL_HOST_PASSWORD = ''  
+EMAIL_HOST_USER = 'gmail@gmail.com'  
+EMAIL_HOST_PASSWORD = 'pwd'  

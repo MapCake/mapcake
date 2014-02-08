@@ -22,7 +22,7 @@ class Types(models.Model):
         db_table = u'types'
 
 
-class Sources(models.Model):
+class Layers(models.Model):
     id = models.AutoField(primary_key=True)
     titre = models.CharField(max_length=128, unique=True)
     source = models.TextField(blank=True)  # This field type is a guess.
@@ -46,12 +46,12 @@ class Sources(models.Model):
         db_table = u'sources'
 
 
-class Layers(models.Model):
+class GrpLayers(models.Model):
     id = models.AutoField(primary_key=True)
     titre = models.CharField(max_length=128, unique=True)
 
     source = models.ForeignKey(
-        Sources, null=True, blank=True, editable=False,
+        Layers, null=True, blank=True, editable=False,
         db_column='source')
 
     class Meta:

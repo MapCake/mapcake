@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+    {% block content %}
+    <div class="container">
+
+      <!-- MAP ELEMENT in HEADER
+      ================================================== -->
+      <div id="map">
+      </div> <!-- /map -->
+    </div> <!-- /container -->
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="col-lg-4">
+          <img class="img-circle" src="{{ STATIC_URL }}img/data-icon-256.png" style="height:140px; width:auto;">
+          <h2>Data</h2>
+          <p>Add your data. Control your files, Data Bases and Cartographic Servers in the same place.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="{{ STATIC_URL }}img/map-icon-256.png" style="height:140px; width:auto;">
+          <h2>Maps</h2>
+          <p>Create your maps and web mapping applications faster.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="{{ STATIC_URL }}img/globe-icon-256.png" style="height:140px; width:auto;">
+          <h2>Atlases</h2>
+          <p>You have a maps collection? Create and atlas and share it!</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+      
+      <!-- START THE FEATURETTES -->
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">All your data in the same place. <span class="text-muted">You'll easy manage it.</span></h2>
+          <p class="lead">With Mapcake you can create a layer collections and manage in the same place. Forget to search in different places, or servers. All is in the same place to manage your files, your Data Bases conections and your favourite servers conections.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        </div><!-- /.col-md-5 -->
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Create a web mapping app. <span class="text-muted">Just in seconds.</span></h2>
+          <p class="lead">With Mapcake you can create a sattic maps, or... a great interactive web application to show, edit or more your geodata. Just in some clicks you have a complete web application to use. Mapcake give you the posibilitie to make a private or public maps. You can put your maps where you want!</p>
+        </div><!-- /.col-md-7 -->
+      </div><!-- /row -->
+
+       <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+        <h2 class="featurette-heading">What hapend with Atlas. <span class="text-muted">They come back!</span></h2>
+        <p class="lead">You have a collection of thematic maps of the same area? Create an Atlas! With Atlases you can create diffrent collections of Maps.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+    <!-- /END THE FEATURETTES -->
+    {% endblock %} 

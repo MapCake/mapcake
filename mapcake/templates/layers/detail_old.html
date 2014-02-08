@@ -1,0 +1,88 @@
+<html>
+	<head>
+		<script src="http://openlayers.org/dev/OpenLayers.js"></script>
+		<script type="text/javascript">
+			var map = new OpenLayers.Map('map');
+			function initMap()
+			{
+				map = new OpenLayers.Map('map');
+				var {{fondDePlan}} = new OpenLayers.Layer.WMS(
+					"{{fondDePlan}}",
+					"{{source.url}}",
+					{layers: '{{fondDePlan}}'},
+					{isBaseLayer: true}
+						);
+				map.addLayer({{fondDePlan}});
+			
+{% if  lstLayers %}
+                  
+                    {% for layer in lstLayers %}
+                        {{layer.nom}} = new OpenLayers.Layer.WMS(
+                            "{{layer.nom}}",
+                            "{{source.url}}",
+                            {layers: '{{layer.nom}}', transparent:'true'},
+                            {visibility:true, isBaseLayer: false}
+                        );
+                        map.addLayer({{layer.nom}});
+                    {% endfor %}
+                     map.addControl(new OpenLayers.Control.MousePosition);
+
+{%endif %}
+				{% if  lon %}
+				map.setCenter(new OpenLayers.LonLat({{lon}},{{lat}}));
+				{% endif %}
+			}
+
+		</script>
+	</head>
+
+	<h1>Source {{source.titre}}</h1>
+	<body onload = 'javascript:initMap();'>
+
+		{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+		<!-- TODO 
+		utiliser les forms from models:
+		https://docs.djangoproject.com/en/1.2/topics/forms/modelforms/
+		  -->
+		<form method = 'post' >	
+			{{ form.non_field_errors }}
+			<table>
+				<tr>
+					<td> 
+						<label for ="name"> Nom: {{source.titre}}</label>
+					</td>
+				</tr>
+				<tr>
+					<td> 
+						<label for ="abstract"> Abstract: {{source.abstract}}</label>
+					</td>
+				</tr>
+				<tr>
+					<td><label for ="type">Type : {{source.type}}</label></td>
+				</tr>
+				<tr><td><label>URL : {{source.url}} </label> </td> </tr>
+				<tr><td> Couches </td></tr>
+				{% if  lstLayers %}
+					{% for layer in lstLayers %}
+						<tr><td><label>
+							{{layer.nom}}: {{layer.boundingBox}}
+						</label></td></tr>
+						<tr><td><ol>
+							{% for style in layer.lstStyles %}
+								<tr><td>
+									{{style.titre}}
+								</td></tr>
+								<tr><td>
+									<img src="{{style.url}}" alt="" style="border:none;"/>
+								</td></tr>
+							{% endfor %}
+						</ol>
+					</td></tr>
+					{% endfor %}
+				{%endif %}			</table>
+
+
+
+		<div id="map" style="width:512px; height:256px;"/>
+	</body>
+</html>

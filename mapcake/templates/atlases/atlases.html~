@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <title>Mapcake, cook your maps</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Bootstrap -->
+    <link href=" {% static  "js/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
+     <link href=" {% static "js/bootstrap/css/bootstrap-responsive.min.css" %}" rel="stylesheet">>
+    <link href="{% static "css/mapcake.css" %}" rel="stylesheet" media="screen">
+    <!--Leaflet-->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+    <![endif]-->
+    <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+    <!-- Holder Javascrip -->
+    <script type="./js/holder/holder.js"></script>
+    
+
+</head>
+  <body>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    
+    <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./index.html">MapCake</a>
+        </div>
+        <div class="container">
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./layers.html">Layers</a></li>
+              <li><a href="./maps.html">Maps</a></li>
+              <li class="active"><a href="./atlases.html">Atlases</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container -->
+      </div>
+    </div>    
+    <div class="container">
+      <div class="row">
+        <div class="page-header">
+        </div>
+        <div class="col-md-3">
+          <!-- REGISTRATION BLOCK FOR PUBLIC VIEW
+          ================================================== -->
+          <form class="form-login">
+            <input type="text" class="input-block-level" placeholder="Username or email" required>
+            <input type="password" class="input-block-level" placeholder="Password" required>
+            <label class="checkbox">
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+            <!--This button must redirect to a user account page if the authentication it's ok-->
+            <button class="btn .btn-mini btn-info" type="submit">Sig in</button>
+          </form>
+
+          <form class="form-signin">
+            <h4 class="form-signin-heading">New on Mapcake? Sign up for free</h4>
+            <input type="text" class="input-block-level" placeholder="Full name">
+            <input type="text" class="input-block-level" placeholder="Email">
+            <input type="password" class="input-block-level" placeholder="Password">
+            <!--This button must redirect to a registration page with the content of the fields if the user tipe somme fileds-->
+            <button class="btn .btn-mini btn-info" type="submit">Sign up for Mapcake</button>
+          </form>
+        </div><!-- /.col-md-* -->
+          <!-- This collum must be list of last public atlases added to the platform -->
+        <div class="col-md-9">
+          <div class="row">
+            <h1>Atlases</h1>
+	  {%for map in latestMapList %}
+            <div class="col-md-10">
+              <div class="atlas">
+                <img class="atlas-image pull-left" src="./img/Data-icon-128.png">
+                <h2 class="atlas-heading">{{ atlasname }} <span class="muted">Created by {{username}} {{date}}</span></h2>
+                <p class="lead">This is simple description of the atlas.This must be the content of the abstract feel in the database. If the user didn't add a description or abstract of the atlas, we can add a default text like "Abstract of the atlas are empty".</p>
+              </div>
+              <hr class="atlas-divider">
+            </div><!-- /.col-md-* -->
+
+
+
+            <!-- The atlases are a infinite scroll to the last public atlases like twitter -->
+            <!-- /END OF atlases -->
+          </div><!-- /.row -->
+        </div><!-- /.col-md-* -->
+      </div><!-- /.row -->
+
+        <div class="container">
+        <!-- FOOTER -->
+          <footer>
+            <p class="pull-right"><a href="#">Back to top</a></p>
+            <p>&copy; 2013 Mapcake, Org. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+          </footer>
+
+    </div><!-- /.container -->
+  </body>
+</html>

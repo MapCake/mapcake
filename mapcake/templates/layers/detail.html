@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <title>Mapcake, cook your maps</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Bootstrap -->
+    <link href=" {% static  "js/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
+     <link href=" {% static "js/bootstrap/css/bootstrap-responsive.min.css" %}" rel="stylesheet">>
+    <link href="{% static "css/mapcake.css" %}" rel="stylesheet" media="screen">
+
+</head>
+  <body>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    
+<!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./index.html">MapCake</a>
+        </div>
+        <div class="container">
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="./index.html">Home</a></li>
+              <li class="active"><a href="./layers.html">Layers</a></li>
+              <li><a href="./maps.html">Maps</a></li>
+              <li><a href="./atlases.html">Atlases</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container -->
+      </div>
+    </div>
+    
+    <div class="container">
+      <div class="row">
+        <div class="page-header">
+        </div>
+        <div class="col-md-3">
+
+          <!-- REGISTRATION BLOCK FOR PUBLIC VIEW
+          ================================================== -->
+          <form class="form-login">
+            <input type="text" class="input-block-level" placeholder="Username or email" required>
+            <input type="password" class="input-block-level" placeholder="Password" required>
+            <label class="checkbox">
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+            <!--This button must redirect to a user account page if the authentication it's ok-->
+            <button class="btn .btn-mini btn-info" type="submit">Sig in</button>
+          </form>
+
+          <form class="form-signin">
+            <h4 class="form-signin-heading">New on Mapcake? Sign up for free</h4>
+            <input type="text" class="input-block-level" placeholder="Full name">
+            <input type="text" class="input-block-level" placeholder="Email">
+            <input type="password" class="input-block-level" placeholder="Password">
+            <!--This button must redirect to a registration page with the content of the fields if the user tipe somme fileds-->
+            <button class="btn .btn-mini btn-info" type="submit">Sign up for Mapcake</button>
+          </form>
+
+        </div><!-- /.span -->
+        <!--David: This block contains the layer image an description tabs -->
+        <div class="col-md-9">
+          <div class="row">
+            <div class="hero-unit">
+              <img src=""/>
+              <h1>Hello, world!</h1>
+              <p>This is a template for a simple layer view. Here there will be an {{layer.image}} of the layer, a single preview created for the layer must show the layer with the symbols. The image must be scallable and must be adjusted at some dimensions</p>
+            </div>
+          </div><!-- /.row -->
+        </div><!-- /.span -->
+        <div class="col-md-9">
+        <!--David: This block contains the layer description tabs -->
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#description" data-toggle="tab">Description</a>
+            </li>
+            <li>
+                <a href="#properties" data-toggle="tab">Properties</a>
+            </li>
+            <li>
+              <a href="#contact_info" data-toggle="tab">Contact Info</a>
+            </li>
+            <li>
+              <a href="#more_info" data-toggle="tab">More info</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="desription">
+              <p>This block must contains the description of layers. For Django we will use a template layer_description with the elements</p>
+              <h3>Layer Name:</h3>
+              <p>{{ layer.titre }} Created by {{ user }} {{layerdatecreation}}</p>
+              <h3>Layer Abstract:</h3>
+              <p>{{ layer.abstract}}</p>
+              <h3>Layer Type:</h3>
+              <p>{{ layer.type }}</p>
+            </div>
+            <div class="tab-pane" id="properties">
+               <p>This block must contains the properties of layers. For Django we will use a template layer_properties with the elements</p>
+               <h3>Content of the Layer:</h3>
+              <p>{ layercontenttype or tags } Forest</p>
+              <h3>Geographical extension of the Layer:</h3>
+              <p>{ layercoordinates in wgs84 } North Latitud: 44.44°</p>
+              <p>{ layercoordinates in wgs84 } South Latitud: 33.33°</p>
+              <p>{ layercoordinates in wgs84 } West Longitud: 00.00°</p>
+              <p>{ layercoordinates in wgs84 } East Longitud: 02.08°</p>
+              <h3>Legend:</h3>
+              <img src="" />{ layer legend }
+            </div>
+            <div class="tab-pane" id="contact_info">
+              <p>This block must contains the descrittion of owner of the layer. For Django we  will use a template layer_owner with the elements</p>
+              <h3>Created by:</h3>
+              <p>{user }</p>
+              <h3>Date of creation:</h3>
+              <P> {layerdatecreation}</p>
+              <h3>Date of last modification:</h3>
+              <P> { layerdatemodification }</p>
+              <h3>ate of creation:</h3>
+              <P> { layerdatecreation }</p>
+              <h3>Phone number:</h3>
+              <P> {user phone contact}</p>
+              <h3>Adress:</h3>
+              <P> {user adress}</p>
+              <h3>City:</h3>
+              <P> {user city}</p>
+              <h3>ZIP code:</h3>
+              <P> {user adress zip code}</p>
+              <h3>Country:</h3>
+              <P> {user country}</p>
+              <h3>email:</h3>
+              <P> {user email}</p>
+            </div>
+          </div><!-- /.tab-content -->
+        </div><!-- /.span -->
+        <!-- /END OF LAYER -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+        <div class="container">
+        <!-- FOOTER -->
+          <footer>
+            <p class="pull-right"><a href="#">Back to top</a></p>
+            <p>&copy; 2013 Mapcake, Org. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+          </footer>
+
+    </div><!-- /.container -->
+  </body>
+</html>

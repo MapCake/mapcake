@@ -57,12 +57,3 @@ class GrpLayers(models.Model):
     class Meta:
         db_table = u'layers'
 
-# les tables de liaison
-
-# class LayersMaps(models.Model):
-#     id = models.IntegerField(primary_key=True)
-#     map_id = models.ForeignKey(Maps, db_column='map_id')
-#     source_id = models.ForeignKey(Layers, db_column='source_id')
-
-#     class Meta:
-#         db_table = u'layers_maps'

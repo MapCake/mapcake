@@ -8,21 +8,13 @@ from forms import LayersForm, TYPE_SOURCE, FIELD_TYPE
 from structure import LayerServices, LayerTable
 import psycopg2
 from userena import views
+from django.contrib.auth.decorators import login_required
 
 # voir http://docs.django-fr.org/intro/tutorial04.html#intro-tutorial04
 
 
 def layer_index(request):    
-    # print request.method
-    # c = {}
-    # c.update(csrf(request))
-    # if (request.method =='POST'):
-    #     print request
-    #     if ("login" in request.POST):
-    #         print 'test'
-    #         return userena.views.signup(request, template_name='accounts/signup_form.html',extra_context=c)
-    #     if ("signin" in request.POST):
-    #         return userena.views.signin(request, template_name='accounts/login.html', extra_context=c)
+    """Access index of the layers"""
     
     latestSourceList = Layers.objects.all()
     return render(request, 
@@ -31,11 +23,12 @@ def layer_index(request):
 
 
 def layer_detail(request, source_id):
+    """Acess detail of the  index source_id"""
     layer = Layers.objects.get(pk=source_id)
     wms = WebMapService(layer.url, version='1.1.1')
     lstLayers = list(wms.contents)
-    fondDePlan = lstLayers[0]
-    tabCoor = calculLonLatLayer(layer.url)
+    backGround = lstLayers[0]
+    tabCoor = computeLonLatLayer(layer.url)
     lon = tabCoor[0]
     lat = tabCoor[1]
     lstNamesLayers = layer.source.split(";")
@@ -45,7 +38,7 @@ def layer_detail(request, source_id):
     return render(request,
         'layers/detail.html',
         {'layer': layer,
-        'lon': lon, 'lat': lat, 'fondDePlan': fondDePlan})
+        'lon': lon, 'lat': lat, 'backGround': backGround})
 
 
 def layer_delete(request, source_id):
@@ -60,7 +53,7 @@ def layer_add(request):
     if (request.method == 'POST'):
        # print request.body
         # le formulaire n'est pas valide
-        if (('enregistrer' in request.POST) and not (formSource.is_valid())):
+        if (('save' in request.POST) and not (formSource.is_valid())):
             # un enregistrement a ete demande
             #print formSource.errors
             return render(request, 
@@ -75,7 +68,7 @@ def layer_add(request):
                 return getLayersForDatabase(request, formSource)
 
             else:
-                if ('enregistrer' in request.POST):
+                if ('save' in request.POST):
                     if (TYPE_SOURCE[2][0] in request.POST[FIELD_TYPE]):
                         return saveLayersForService(request, formSource)
     else:
@@ -86,37 +79,33 @@ def layer_add(request):
         context_instance=RequestContext(request))
 
 
-#Sauvegarde d'une couche pour un servcie
 def  saveLayersForService(request, formSource):
-    #enregistrement des sources
+    """Save a layer from a service"""
     baliseLayer = 'layerSelected'
-    #print request.body
     lstLayersString = ""
-    # a reprendre chercher django checkbox
     lstLayersString = ";".join(
         request.POST.getlist(baliseLayer))
     currentSource = formSource.save(commit=False)
     currentSource.source = lstLayersString
     currentSource.save()
 
-    print "sauvegarde avec succes"
+    print "save successfull"
     return redirect("/layers/index")
 
 
-#Recupere les layers pour une source a l'aide l'url de la requete
-#Regenere le formulaire formSource pour en tenir compte
 def getLayersForService(request, formSource):
+    """Get a layer from a service with url.
+    Recreate the form t take care of that"""
     name = None
     lon = None
     lat = None
     url = request.POST['url']
-    # url = 'http://www.cartociudad.es/wms/CARTOCIUDAD/CARTOCIUDAD?'
     wms = WebMapService(url, version='1.1.1')
     lstLayersService = []
     for currentLayer in wms.contents:
         lstLayersService.append(LayerServices(wms, currentLayer))
 
-    tabCoor = calculLonLatLayer(url)
+    tabCoor = computeLonLatLayer(url)
     lon = tabCoor[0]
     lat = tabCoor[1]
     return render(request,
@@ -127,8 +116,10 @@ def getLayersForService(request, formSource):
         context_instance=RequestContext(request))
 
 
-# Return the layers from an access to a database
 def getLayersForDatabase(request, formSource):
+    """
+Return the layers from an access to a database
+    """
     port = request.POST['port']
     host = request.POST['server']
     base = request.POST['base']
@@ -155,14 +146,13 @@ def getLayersForDatabase(request, formSource):
 
 
 # retourne les longitudes et latitude extremes a partir d'une url
-def calculLonLatLayer(url):
+def computeLonLatLayer(url):
+    """Get max and min latitudes and longitude from an url"""
     lon = None
     lat = None
-    # url = 'http://www.cartociudad.es/wms/CARTOCIUDAD/CARTOCIUDAD?'
     wms = WebMapService(url, version='1.1.1')
     lstLayers = list(wms.contents)
     lstLayers.remove(lstLayers[0])
-    # TODO faire une structure
     minX = 360
     minY = 360
     maxY = -360

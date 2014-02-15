@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+  {% load staticfiles %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <title>{% block title %}Mapcake, cook your maps{% endblock %}</title>
+
+  <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet"/>
+  <link href="{{ STATIC_URL }}css/mapcake.css" rel="stylesheet" media="screen">
+  <!--Leaflet-->
+  <link href="{{ STATIC_URL }}js/leaflet/leaflet.css" rel="stylesheet"/>
+  
+  {% block meta %}{% endblock %}
+</head>
+<body>
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'home:index'%}">MapCake</a>
+      </div>
+        <div class="container">
+          {% if user.is_authenticated %}<div class="navbar-collapse collapse">
+            <form class="navbar-form navbar-right" role="form" action={% url 'accounts:userena_signout' %}>
+              <button type="submit" class="btn btn-danger btn-sm">Sign out</button>
+          {% else %}
+          <div class="navbar-collapse collapse">
+            <form class="navbar-form navbar-right" role="form" method="post" action={% url 'accounts:userena_signin' %}>
+              {% csrf_token %}
+            <div class="form-group">
+              <input class="required" id="id_identification" type="text" placeholder="User" class="form-control" name="identification">
+            </div>
+            <div class="form-group">
+              <input class="required" id="id_password" name="password" type="password" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success btn-sm">Sign in</button> <!-- ver "url 'userena.views.signin' accounts.MyProfile.username accounts.MyProfile.password  " -->
+            <a href={% url 'accounts:userena_signup' %}>Or Sign up</a>
+            {% endif %}
+          </form>
+            <ul class="nav navbar-nav">
+              <li><a href="{% url 'home:index' %}">Home</a></li>
+              <li><a href="{% url 'layers:layer_index' %}">Layers</a></li>
+              <li><a href="./maps.html">Maps</a></li>
+              <!-- <li><a href="./atlases.html">Atlases</a></li>-->
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container -->
+      </div>
+    </div>
+  </div>
+  {% block body %}
+    {% block content %}
+    {% endblock %}
+  {% endblock %}
+
+  <footer>
+    <p class="pull-right"><a href="#">Back to top</a></p>
+    <p>&copy; 2013 Mapcake, Org. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+  </footer>
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ STATIC_URL }}js/jquery/jquery-2.0.3.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/docs-assets/js/holder.js"></script>
+    <script src="{{ STATIC_URL }}js/leaflet/leaflet.js"></script>
+
+    <!-- Holder Javascrip -->
+    <script type="{{ STATIC_URL }}js/holder/holder.js"></script>
+    <!-- Custom Javascript for maps -->
+    <script type="text/javascript">
+      var map = L.map('map').setView([48.8629246, 2.3254306], 10);
+      L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+        }).addTo(map);
+    </script>
+</body>
+</html>

@@ -1,10 +1,10 @@
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.core.context_processors import csrf
 from owslib.wms import WebMapService
 from django.template import RequestContext
 from models import Layers
 from django.contrib.auth.models import User
-from formsAdd import LayersForm, TYPE_SOURCE, FIELD_TYPE
+from forms import LayersForm, TYPE_SOURCE, FIELD_TYPE
 from structure import LayerServices, LayerTable
 import psycopg2
 from userena import views
@@ -13,19 +13,19 @@ from userena import views
 
 
 def layer_index(request):    
-    print request.method
-    c = {}
-    c.update(csrf(request))
-    if (request.method =='POST'):
-        print request
-        if ("login" in request.POST):
-            print 'test'
-            return userena.views.signup(request, template_name='accounts/signup_form.html',extra_context=c)
-        if ("signin" in request.POST):
-            return userena.views.signin(request, template_name='account/login.html', extra_context=c)
+    # print request.method
+    # c = {}
+    # c.update(csrf(request))
+    # if (request.method =='POST'):
+    #     print request
+    #     if ("login" in request.POST):
+    #         print 'test'
+    #         return userena.views.signup(request, template_name='accounts/signup_form.html',extra_context=c)
+    #     if ("signin" in request.POST):
+    #         return userena.views.signin(request, template_name='accounts/login.html', extra_context=c)
     
     latestSourceList = Layers.objects.all()
-    return render_to_response(
+    return render(request, 
         'layers/index.html',
         {'latestSourceList': latestSourceList})
 
@@ -42,7 +42,7 @@ def layer_detail(request, source_id):
     lstLayers = []
     for currentName in lstNamesLayers:
         lstLayers.append(LayerServices(wms, currentName))
-    return render_to_response(
+    return render(request,
         'layers/detail.html',
         {'layer': layer,
         'lon': lon, 'lat': lat, 'fondDePlan': fondDePlan})
@@ -54,7 +54,7 @@ def layer_delete(request, source_id):
     return redirect("/layers/index")
 
 
-
+@login_required
 def layer_add(request):
     formSource = LayersForm(request.POST or None)
     if (request.method == 'POST'):
@@ -63,7 +63,7 @@ def layer_add(request):
         if (('enregistrer' in request.POST) and not (formSource.is_valid())):
             # un enregistrement a ete demande
             #print formSource.errors
-            return render_to_response(
+            return render(request, 
                 'layers/add.html',
                 {'formSource': formSource, 'error_message': True},
                 context_instance=RequestContext(request))
@@ -81,7 +81,7 @@ def layer_add(request):
     else:
         print "%s" % repr(formSource.errors)
         print request.body
-    return render_to_response(
+    return render(request,
         'layers/add.html', {'formSource': formSource},
         context_instance=RequestContext(request))
 
@@ -119,7 +119,7 @@ def getLayersForService(request, formSource):
     tabCoor = calculLonLatLayer(url)
     lon = tabCoor[0]
     lat = tabCoor[1]
-    return render_to_response(
+    return render(request,
         'layers/add.html',
         {'formSource': formSource,
         'url': url, 'lstLayersService': lstLayersService,
@@ -147,7 +147,7 @@ def getLayersForDatabase(request, formSource):
         if (currentTable.geoJSonTab is not None):
             lstLayersTable.append(currentTable)
 
-    return render_to_response(
+    return render(request,
         'layers/add.html',
         {'formSource': formSource,
          'lstLayersTable': lstLayersTable},

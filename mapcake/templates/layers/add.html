@@ -1,8 +1,5 @@
-<!DOCTYPE html > 
-<html>
-	<head>
-	    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-		<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>
+{% extends "base.html" %}
+{% block content %}
 		<script type="text/javascript">
 			var map = new OpenLayers.Map('map');
 			function initMap()
@@ -222,5 +219,4 @@
 			<input type="submit" name="enregistrer" value="Enregistrer"/>
 		</form>
 		<div id="map" style="width:512px; height:256px;"/>
-	</body>
-</html>
+	{% endblock %}

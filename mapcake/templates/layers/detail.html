@@ -1,75 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {% load staticfiles %}
-    <title>Mapcake, cook your maps</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- Bootstrap -->
-    <link href=" {% static  "js/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
-     <link href=" {% static "js/bootstrap/css/bootstrap-responsive.min.css" %}" rel="stylesheet">>
-    <link href="{% static "css/mapcake.css" %}" rel="stylesheet" media="screen">
-
-</head>
-  <body>
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
-    
-<!-- Navbar
-    ================================================== -->
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="./index.html">MapCake</a>
-        </div>
-        <div class="container">
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li><a href="./index.html">Home</a></li>
-              <li class="active"><a href="./layers.html">Layers</a></li>
-              <li><a href="./maps.html">Maps</a></li>
-              <li><a href="./atlases.html">Atlases</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div><!--/.container -->
-      </div>
-    </div>
-    
-    <div class="container">
-      <div class="row">
-        <div class="page-header">
-        </div>
-        <div class="col-md-3">
-
-          <!-- REGISTRATION BLOCK FOR PUBLIC VIEW
-          ================================================== -->
-          <form class="form-login">
-            <input type="text" class="input-block-level" placeholder="Username or email" required>
-            <input type="password" class="input-block-level" placeholder="Password" required>
-            <label class="checkbox">
-              <input type="checkbox" value="remember-me"> Remember me
-            </label>
-            <!--This button must redirect to a user account page if the authentication it's ok-->
-            <button class="btn .btn-mini btn-info" type="submit">Sig in</button>
-          </form>
-
-          <form class="form-signin">
-            <h4 class="form-signin-heading">New on Mapcake? Sign up for free</h4>
-            <input type="text" class="input-block-level" placeholder="Full name">
-            <input type="text" class="input-block-level" placeholder="Email">
-            <input type="password" class="input-block-level" placeholder="Password">
-            <!--This button must redirect to a registration page with the content of the fields if the user tipe somme fileds-->
-            <button class="btn .btn-mini btn-info" type="submit">Sign up for Mapcake</button>
-          </form>
-
-        </div><!-- /.span -->
+{% extends "base.html" %}
+{% block content %}
         <!--David: This block contains the layer image an description tabs -->
         <div class="col-md-9">
           <div class="row">
@@ -146,14 +76,4 @@
         <!-- /END OF LAYER -->
       </div><!-- /.row -->
     </div><!-- /.container -->
-
-        <div class="container">
-        <!-- FOOTER -->
-          <footer>
-            <p class="pull-right"><a href="#">Back to top</a></p>
-            <p>&copy; 2013 Mapcake, Org. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-          </footer>
-
-    </div><!-- /.container -->
-  </body>
-</html>
+{% endblock %}

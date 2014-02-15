@@ -2,7 +2,6 @@
 import os
 import sys
 
-# management file for django
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mapcake.settings")
 

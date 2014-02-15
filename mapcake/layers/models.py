@@ -10,7 +10,7 @@
 # into your database.
 
 from django.contrib.gis.db import models
-from map.models import Maps
+# from map.models import Maps
 from django.contrib.auth.models import User
 
 class Types(models.Model):
@@ -59,13 +59,10 @@ class GrpLayers(models.Model):
 
 # les tables de liaison
 
+# class LayersMaps(models.Model):
+#     id = models.IntegerField(primary_key=True)
+#     map_id = models.ForeignKey(Maps, db_column='map_id')
+#     source_id = models.ForeignKey(Layers, db_column='source_id')
 
-
-
-class LayersMaps(models.Model):
-    id = models.IntegerField(primary_key=True)
-    map_id = models.ForeignKey(Maps, db_column='map_id')
-    source_id = models.ForeignKey(Layers, db_column='source_id')
-
-    class Meta:
-        db_table = u'layers_maps'
+#     class Meta:
+#         db_table = u'layers_maps'

@@ -7,5 +7,4 @@ urlpatterns = patterns('',
     # url(r'^$', 'mapcake.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^$', views.index, name='index'),
-    #url(r'^layers/', views.layers, name='layers'),
   )

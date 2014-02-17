@@ -44,7 +44,7 @@ def layer_detail(request, source_id):
 def layer_delete(request, source_id):
     source = Layers.objects.get(pk=source_id)
     source.delete()
-    return redirect("/layers/index")
+    return redirect("/layers")
 
 
 @login_required
@@ -90,7 +90,7 @@ def  saveLayersForService(request, formSource):
     currentSource.save()
 
     print "save successfull"
-    return redirect("/layers/index")
+    return redirect("/layers")
 
 
 def getLayersForService(request, formSource):

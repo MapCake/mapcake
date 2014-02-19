@@ -28,15 +28,15 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'home:index'%}">MapCake</a>
+        <a class="navbar-brand" href="{% url 'home:index' %}">MapCake</a>
       </div>
         <div class="container">
           {% if user.is_authenticated %}<div class="navbar-collapse collapse">
-            <form class="navbar-form navbar-right" role="form" action={% url 'accounts:userena_signout' %}>
+            <form class="navbar-form navbar-right" role="form" action="{% url 'accounts:userena_signout' %}">
               <button type="submit" class="btn btn-danger btn-sm">Sign out</button>
           {% else %}
           <div class="navbar-collapse collapse">
-            <form class="navbar-form navbar-right" role="form" method="post" action={% url 'accounts:userena_signin' %}>
+            <form class="navbar-form navbar-right" role="form" method="post" action="{% url 'accounts:userena_signin' %}">
               {% csrf_token %}
             <div class="form-group">
               <input class="required" id="id_identification" type="text" placeholder="User" class="form-control" name="identification">
@@ -45,7 +45,7 @@
               <input class="required" id="id_password" name="password" type="password" placeholder="Password" class="form-control">
             </div>
             <button type="submit" class="btn btn-success btn-sm">Sign in</button> <!-- ver "url 'userena.views.signin' accounts.MyProfile.username accounts.MyProfile.password  " -->
-            <a href={% url 'accounts:userena_signup' %}>Or Sign up</a>
+            <a href="{% url 'accounts:userena_signup' %}">Or Sign up</a>
             {% endif %}
           </form>
             <ul class="nav navbar-nav">
@@ -65,6 +65,7 @@
   {% endblock %}
 
   <footer>
+    <hr>
     <p class="pull-right"><a href="#">Back to top</a></p>
     <p>&copy; 2013 Mapcake, Org. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
   </footer>

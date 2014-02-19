@@ -1,0 +1,63 @@
+<!-- USER MENU -->
+<div class="mc-sidebar">
+  <div class="col-md-3">
+      <ul class="nav nav-pills nav-stacked" style="width: 300px;">
+        {% if user.username == profile.user.username %}
+        <li class="dropdown"> 
+          <a class="dropdow-toggle" href="#" data-toggle="collapse" data-target="#userMenu">
+            <h3> Profile 
+            <span class="caret"></span>
+            </h3> 
+          </a>
+          <ul class="list collapse" id="userMenu">
+              <li><a href="{% url 'accounts:userena_profile_detail' user.username %}">View Profile</a></li>
+              <li><a href="{% url 'accounts:userena_profile_edit' user.username %}">Edit Details</a></li>
+              <li><a href="{% url 'accounts:userena_password_change' user.username %}">Change Password</a></li>
+              <li><a href="{% url 'accounts:userena_email_change' user.username %}">Change Email</a></li>
+              <li><a href="{% url 'accounts:userena_signout' %}">Logout</a></li>
+          </ul>
+          {% else %}
+          <li class="dropdown"> 
+          <a href="{% url 'home:index' %}">
+            <h3> Home
+            </span>
+            </h3> 
+          </a>
+          {% endif %}
+        </li>
+        {% if user.username == profile.user.username %}
+        <li class="dropdown"> 
+          <a class="dropdow-toggle" href="#" data-toggle="collapse" data-target="#userMenu2">
+            <h3>Layers
+            <span class="caret"></span>
+            </h3>
+          </a>
+            <ul class="list collapse" id="userMenu2">
+              <li><a href="{% url 'layers:layer_index' %}">Layers Catalog</a></li>
+              <li><a href="{% url 'layers:add' %}">Add a new Layer</a></li>
+            </ul>{% else %}
+          <li class="dropdown"> 
+          <a href="{% url 'layers:layer_index' %}">
+            <h3> Layers </h3> 
+          </a>
+          {% endif %}
+        </li>
+        {% if user.username == profile.user.username %}
+        <li class="dropdown"> 
+          <a class="dropdow-toggle" href="#" data-toggle="collapse" data-target="#userMenu3">
+            <h3> Maps <span class="caret"></span>
+            </h3>
+          </a>
+            <ul class="list collapse" id="userMenu3">
+              <li><a href="#">Maps Catalog</a></li>
+              <li><a href="#">Create a new Map</a></li>
+            </ul>{% else %}
+          <li class="dropdown"> 
+          <a href="{% url 'home:index' %}">
+            <h3> Maps </h3> 
+          </a>
+          {% endif %}
+        </li>
+      </ul>
+  </div> 
+</div>

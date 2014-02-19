@@ -1,24 +1,30 @@
 {% extends "base.html" %}
+
 {% block content %}
+<div class="row">
+  {% include "nav_bar.html" %}
   <!-- This column must be list of last public layers added to the platform -->
-  <div class="container">
-    {% if latestSourceList %}
-     	<div class="span9">
-     		<div class="row-fluid">
-   	    	{% for source in latestSourceList %}
-         	<div class="span10">
-     				<div class="layer">
-       				<img class="layer-image pull-left" src=""><!-- This element must be and image of the layer, we can create this and save some place, or in the database. The dimensions are to define-->
-     	 				<h2 class="layer-heading">
-     	 				<a href="./{{source.id}}">{{ source.titre }}</a>
-     	 				<span class="muted">Created by {{username}} {{date}}</span></h2>
-       				<p class="lead">{{source.abstract}}</p>
-     				</div>
-     			  <hr class="layer-divider">
-     			</div>
-   	    	{% endfor %}
-     		</div>
-     	</div>
-    {% endif %}
-  </div> <!-- ./container -->
+  <div class="col-md-8">
+    <div class="container">
+      {% if latestSourceList %}
+      <div class="span9">
+        <div class="row-fluid">
+          {% for source in latestSourceList %}
+          <div class="span10">
+            <hr class="layer-divider">
+            <div class="layer">
+              <img class="layer-image pull-left" src=""><!-- This element must be and image of the layer, we can create this and save some place, or in the database. The dimensions are to define-->
+              <h2 class="layer-heading">
+              <a href="./{{source.id}}">{{ source.titre }}</a>
+              <span class="muted">Created by {{username}} {{date}}</span></h2>
+              <p class="lead">{{source.abstract}}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div> <!-- ./container -->
+  </div>
+</div>
 {% endblock %}

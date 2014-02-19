@@ -1,21 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="row">
-    {% include "nav_bar.html" %}
         <!--David: This block contains the layer image an description tabs -->
-        <div class="col-md-8">
+        <div class="col-md-9">
           <div class="row">
-            <div class="header">
-              <h1> {{ layer.titre }} </h1> 
-              <h4> Created by <a href="">{{ user }}</a> {{layerdatecreation}} </h4> 
-            </div>
             <div class="hero-unit">
-              <div id="map1">
-              </div> <!-- /map -->
+              <img src=""/>
               <h1>Hello, world!</h1>
               <p>This is a template for a simple layer view. Here there will be an {{layer.image}} of the layer, a single preview created for the layer must show the layer with the symbols. The image must be scallable and must be adjusted at some dimensions</p>
             </div>
           </div><!-- /.row -->
+        </div><!-- /.span -->
+        <div class="col-md-9">
         <!--David: This block contains the layer description tabs -->
           <ul class="nav nav-tabs">
             <li class="active">
@@ -35,7 +30,7 @@
             <div class="tab-pane active" id="desription">
               <p>This block must contains the description of layers. For Django we will use a template layer_description with the elements</p>
               <h3>Layer Name:</h3>
-              <p>{{ layer.titre }}</p>
+              <p>{{ layer.titre }} Created by {{ user }} {{layerdatecreation}}</p>
               <h3>Layer Abstract:</h3>
               <p>{{ layer.abstract}}</p>
               <h3>Layer Type:</h3>
@@ -81,14 +76,4 @@
         <!-- /END OF LAYER -->
       </div><!-- /.row -->
     </div><!-- /.container -->
-</div><!-- /.row-->
-<!-- Custom Javascript for maps -->
-    <script src="{{ STATIC_URL }}js/leaflet/leaflet.js"></script><!-- To redistribute the footer -->
-    <script type="text/javascript">
-      var map1 = L.map('map1').setView([48.8629246, 2.3254306], 10);
-      L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
-        }).addTo(map1);
-    </script>
 {% endblock %}

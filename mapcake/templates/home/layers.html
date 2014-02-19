@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+    {% block content %}
+    <div class="container">
+          <!-- This collum must be list of last public layers added to the platform -->
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-10">
+              <h1>Layers</h1>
+              <div class="layer">
+                <img class="layer-image pull-left" src="./img/Data-icon-128.png">
+                <a href="./layer_name.html"><h2 class="layer-heading">{{ layername }} <span class="muted">Created by {{username}} {{date}}</span></h2></a>
+                <p class="lead">This is simple description of the layer.This must be the content of the abstract feel in the database. If the user didn't add a description or abstract of the layer, we can add a default text like "Abstract of the layer are empty".</p>
+              </div>
+              <hr class="layer-divider">
+            </div><!-- /.col-md-* -->
+
+            <div class="col-md-10">
+              <div class="layer">
+                <img class="layer-image pull-left" src="./img/Map-icon-128.png"><!-- This element must be and image of the layer, we can create this and save some place, or in the database. The dimensions are to define-->
+                <a href="./layer_name.html"><h2 class="layer-heading">{{ layername }} <span class="muted">Created by {{username}} {{date}}</span></h2></a>
+                <p class="lead">This is simple description of the layer.This must be the content of the abstract feel in the database. If the user didn't add a description or abstract of the layer, we can add a default text like "Abstract of the layer are empty".This is simple description of the layer.This must be the content of the abstract feel in the database. If the user didn't add a description or abstract of the layer, we can add a default text like "Abstract of the layer are empty".</p>
+              </div>
+              <hr class="layer-divider">
+            </div><!-- /.col-md-* -->
+
+            <div class="col-md-10">
+              <div class="layer">
+                <img class="layer-image pull-left" src="./img/Globe-icon-128.png"><!-- This element must be and image of the layer, we can create this and save some place, or in the database. The dimensions are to define-->
+                <a href="./layer_name.html"><h2 class="layer-heading">{{ layername }} <span class="muted">Created by {{username}} {{date}}</span></h2></a>
+                <p class="lead">"Abstract of the layer are empty".</p>
+              </div>
+              <hr class="layer-divider">
+            </div><!-- /.col-md-* -->
+
+            <div class="col-md-10">
+              <div class="layer">
+                <img class="layer-image pull-left" src="./img/Map-icon-128.png"><!-- This element must be and image of the layer, we can create this and save some place, or in the database. The dimensions are to define-->
+                <a href="./layer_name.html"><h2 class="layer-heading">{{ layername }} <span class="muted">Created by {{username}} {{date}}</span></h2></a>
+                <p class="lead">This is simple description of the layer.This must be the content of the abstract feel in the database. If the user didn't add a description or abstract of the layer, we can add a default text like "Abstract of the layer are empty".This is simple description of the layer.This must be the content of the abstract feel in the database. If the user didn't add a description or abstract of the layer, we can add a default text like "Abstract of the layer are empty".This is simple description of the layer.This must be the content of the abstract feel in the database. If the user didn't add a description or abstract of the layer, we can add a default text like "Abstract of the layer are empty".</p>
+              </div>
+              <hr class="layer-divider">
+            </div><!-- /.col-md-* -->
+
+            <div class="col-md-10">
+              <div class="layer">
+                <img class="layer-image pull-left" src="./img/Globe-icon-128.png"><!-- This element must be and image of the layer, we can create this and save some place, or in the database. The dimensions are to define-->
+                <a href="./layer_name.html"><h2 class="layer-heading">{{ layername }} <span class="muted">Created by {{username}} {{date}}</span></h2></a>
+                <p class="lead">This is simple description of the layer.This must be the content of the abstract feel in the database. If the user didn't add a description or abstract of the layer, we can add a default text like "Abstract of the layer are empty".</p>
+              </div>
+              <hr class="layer-divider">
+            </div><!-- /.col-md-* -->
+            <!-- The layers are a infinite scroll to the last public layers like twitter -->
+            <!-- /END OF LAYERS -->
+          </div><!-- /.row -->
+        </div><!-- /.col-md-* -->
+      </div><!-- /.row -->
+    {% endblock %} 

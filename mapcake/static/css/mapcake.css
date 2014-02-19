@@ -88,19 +88,12 @@ body {
   }
 
 
-/* CUSTOMIZE THE MAP AREA FOR EACH TEMPLATE
+/* CUSTOMIZE THE MAP AREA 
   -------------------------------------------------- */
-
   #map{
     height: 450px;
     margin-top: 48px;
     margin-bottom: 25px;
-  }
-
-  #map1{
-    height: 450px;
-    margin-top: 4px;
-    margin-bottom: 5px;
   }
 
 /* MARKETING CONTENT
@@ -294,28 +287,27 @@ body {
   padding-top:    10px;
   padding-bottom: 10px;
   text-shadow: 0 1px 0 #fff;
-  background-color: #f7f5f5;
+  background-color: #f7f5fa;
   border-radius: 5px;
 }
 
 /* All levels of nav */
 .mc-sidebar .nav > li > a {
   display: block;
-  color: #717171;
+  color: #716b7a;
   padding: 5px 20px;
 }
 .mc-sidebar .nav > li > a:hover,
 .mc-sidebar .nav > li > a:focus {
   text-decoration: none;
-  background-color: #e5e5e5;
+  background-color: #e5e3e9;
   border-right: 1px solid #dbd8e0;
 }
-
 .mc-sidebar .nav > .active > a,
 .mc-sidebar .nav > .active:hover > a,
 .mc-sidebar .nav > .active:focus > a {
   font-weight: bold;
-  color: #565656;
+  color: #563d7c;
   background-color: transparent;
   border-right: 1px solid #563d7c;
 }
@@ -330,33 +322,6 @@ body {
   padding-bottom: 3px;
   padding-left: 30px;
   font-size: 90%;
-  color: #111111
-}
-
-/* To show the menu options elements in the same way than menu nav */
-#userMenu2> li,
-#userMenu3> li, 
-#userMenu> li {
-  list-style-type: none;
-}
-#userMenu2> li > a,
-#userMenu3> li > a,
-#userMenu> li > a {
-  display: block;
-  padding-top:    3px;
-  padding-bottom: 3px;
-  padding-left: 3px;
-  color: #565656
-}
-#userMenu2> li > a:hover,
-#userMenu2> li > a:focus,
-#userMenu3> li > a:hover,
-#userMenu3> li > a:focus,  
-#userMenu> li > a:hover,
-#userMenu> li > a:focus {
-  text-decoration: none;
-  background-color: #e5e5e5;
-  border-right: 1px solid #dbd8e0;
 }
 
 /* Show and affix the side nav when space allows it */

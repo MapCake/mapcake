@@ -54,7 +54,7 @@ docs/_build/
 # My local stuff:
 *.pyc
 *.sublime*
-mapcake/mapcake/settings.py
+#mapcake/mapcake/settings.py
 mapcake/mapcake/settings/
 
 # File types #

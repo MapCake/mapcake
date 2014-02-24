@@ -16,29 +16,30 @@ from django.contrib.auth.decorators import login_required
 def layer_index(request):    
     """Access index of the layers"""
     
-    latestSourceList = Layers.objects.all()
+    latestLayerList = Layers.objects.all()
     return render(request, 
         'layers/index.html',
-        {'latestSourceList': latestSourceList})
+        {'latestLayerList': latestLayerList})
 
 
 def layer_detail(request, source_id):
     """Acess detail of the  index source_id"""
     layer = Layers.objects.get(pk=source_id)
-    wms = WebMapService(layer.url, version='1.1.1')
-    lstLayers = list(wms.contents)
-    backGround = lstLayers[0]
-    tabCoor = computeLonLatLayer(layer.url)
-    lon = tabCoor[0]
-    lat = tabCoor[1]
-    lstNamesLayers = layer.source.split(";")
-    lstLayers = []
-    for currentName in lstNamesLayers:
-        lstLayers.append(LayerServices(wms, currentName))
-    return render(request,
-        'layers/detail.html',
-        {'layer': layer,
-        'lon': lon, 'lat': lat, 'backGround': backGround})
+    if (request.user.is_authenticated() or not(layer.isPrivate)):
+        wms = WebMapService(layer.url, version='1.1.1')
+        lstLayers = list(wms.contents)
+        backGround = lstLayers[0]
+        tabCoor = computeLonLatLayer(layer.url)
+        lon = tabCoor[0]
+        lat = tabCoor[1]
+        lstNamesLayers = layer.source.split(";")
+        lstLayers = []
+        for currentName in lstNamesLayers:
+            lstLayers.append(LayerServices(wms, currentName))
+        return render(request,
+            'layers/detail.html',
+            {'layer': layer,
+            'lon': lon, 'lat': lat, 'backGround': backGround})
 
 
 def layer_delete(request, source_id):

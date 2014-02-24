@@ -24,7 +24,7 @@ class Types(models.Model):
 
 class Layers(models.Model):
     id = models.AutoField(primary_key=True)
-    titre = models.CharField(max_length=128, unique=True)
+    title = models.CharField(max_length=128, unique=True)
     source = models.TextField(blank=True)  # This field type is a guess.
     abstract = models.TextField(blank=True)
     # Field name made lowercase. This field type is a guess.
@@ -41,19 +41,6 @@ class Layers(models.Model):
         null=True, blank=True, editable=False, auto_now_add=True)
     modification_date = models.DateTimeField(
         null=True, blank=True, editable=False, auto_now=True)
+    isPrivate = models.BooleanField(null=False,blank=False, default=True)
 
-    class Meta:
-        db_table = u'sources'
-
-
-class GrpLayers(models.Model):
-    id = models.AutoField(primary_key=True)
-    titre = models.CharField(max_length=128, unique=True)
-
-    source = models.ForeignKey(
-        Layers, null=True, blank=True, editable=False,
-        db_column='source')
-
-    class Meta:
-        db_table = u'layers'
 

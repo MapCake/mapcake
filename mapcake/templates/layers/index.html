@@ -2,20 +2,22 @@
 {% block content %}
   <!-- This column must be list of last public layers added to the platform -->
   <div class="container">
-    {% if latestSourceList %}
+    {% if latestLayerList %}
      	<div class="span9">
      		<div class="row-fluid">
-   	    	{% for source in latestSourceList %}
+   	    	{% for layer in latestLayerList %}
+   	    	{% if user.is_authenticated or not layer.isPrivate %}
          	<div class="span10">
      				<div class="layer">
        				<img class="layer-image pull-left" src=""><!-- This element must be and image of the layer, we can create this and save some place, or in the database. The dimensions are to define-->
      	 				<h2 class="layer-heading">
-     	 				<a href="./{{source.id}}">{{ source.titre }}</a>
+     	 				<a href={{layer.id}}>{{ layer.title }}</a>
      	 				<span class="muted">Created by {{username}} {{date}}</span></h2>
        				<p class="lead">{{source.abstract}}</p>
      				</div>
      			  <hr class="layer-divider">
      			</div>
+     		{%endif%}
    	    	{% endfor %}
      		</div>
      	</div>

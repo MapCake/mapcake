@@ -116,8 +116,8 @@
 			<table>
 				<tr>
 					<td> <label for ="name"> Nom </label> </td>
-					<td>{{formSource.titre}}</td>
-					<td>{{formSource.titre.errors }}</td>
+					<td>{{formSource.title}}</td>
+					<td>{{formSource.title.errors }}</td>
 				</tr>
 				<tr>
 					<td> <label for ="abstract"> Abstract </label> </td>
@@ -128,6 +128,11 @@
 					<td><label for ="type">Type</label></td>
 					<td>{{formSource.type}}</td>
 					<td>{{ formSource.type.errors }}</td>
+				</tr>
+				<tr>
+					<td><label for ="isPrivate">Privé</label></td>
+					<td>{{formSource.isPrivate}}</td>
+					<td>{{ formSource.isPrivate.errors }}</td>
 				</tr>
 			</table>
 
@@ -161,7 +166,7 @@
 							<tr><td><ol>
 								{% for style in layer.lstStyles %}
 									<tr><td>
-										{{style.titre}}
+										{{style.title}}
 									</td></tr>
 									<tr><td>
 										<img src="{{style.url}}" alt="" style="border:none;"/>

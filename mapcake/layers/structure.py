@@ -36,7 +36,7 @@ class LayerServices:
 class LayerStyle:
     def __init__(self, nom, currentElemStyle):
         self.name = nom
-        self.titre = currentElemStyle['title']
+        self.title = currentElemStyle['title']
         self.url = currentElemStyle['legend']
 
 

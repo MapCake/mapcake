@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'layers',
     #'debug_toolbar', # To Delete in prod
     'south',
+    'maps',
 )
 
 MIDDLEWARE_CLASSES = (

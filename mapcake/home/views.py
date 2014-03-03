@@ -1,5 +1,3 @@
-from django.http import HttpResponse
-from django.template import loader
 from django.template.response import TemplateResponse
 
 # Create your views here.

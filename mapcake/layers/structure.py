@@ -1,6 +1,6 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*
-import time
+from time import clock
 from psycopg2.extensions import AsIs
 from django.contrib.gis.gdal import DataSource
 
@@ -57,7 +57,7 @@ class LayerTable:
         if (cursor.rowcount > 0):
             nameColumn = cursor.fetchone()
             nameColumn = str(nameColumn[0])
-            tpsdebJSon = time.clock()
+            tpsdebJSon = clock()
             cursor.execute(
                 "SELECT ST_AsGeoJSON(%s) FROM %s LIMIT 100000",
                 (AsIs(nameColumn), AsIs(self.name)))
@@ -67,7 +67,7 @@ class LayerTable:
             while row is not None:
                 self.geoJSonTab.append(row[0])
                 row = cursor.fetchone()
-            tpsFinJSon = time.clock()
+            tpsFinJSon = clock()
             print( "Temps sur JSON :" + str( tpsFinJSon - tpsdebJSon))
 
 

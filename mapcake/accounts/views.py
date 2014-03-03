@@ -5,9 +5,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import logout as Signout
 from django.views.generic import TemplateView
-from django.template.context import RequestContext
 from django.views.generic.list import ListView
-from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.utils.translation import ugettext as _
@@ -17,14 +15,12 @@ from userena.forms import (SignupForm, SignupFormOnlyEmail, AuthenticationForm,
                            ChangeEmailForm, EditProfileForm)
 from userena.models import UserenaSignup
 from userena.decorators import secure_required
-from userena.backends import UserenaAuthenticationBackend
 from userena.utils import signin_redirect, get_profile_model, get_user_model
 from userena import signals as userena_signals
 from userena import settings as userena_settings
 
 from guardian.decorators import permission_required_or_403
-
-import warnings
+from warnings import warn
 
 class ExtraContextTemplateView(TemplateView):
     """ Add extra context to a simple template view """
@@ -791,7 +787,7 @@ def profile_list(request, page=1, template_name='userena/profile_list.html',
         An instance of ``django.core.paginator.Page``.
 
     """
-    warnings.warn("views.profile_list is deprecated. Use ProfileListView instead", DeprecationWarning, stacklevel=2)
+    warn("views.profile_list is deprecated. Use ProfileListView instead", DeprecationWarning, stacklevel=2)
 
     try:
         page = int(request.GET.get('page', None))

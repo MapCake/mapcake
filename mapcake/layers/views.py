@@ -1,13 +1,10 @@
 from django.shortcuts import render, redirect
-from django.core.context_processors import csrf
 from owslib.wms import WebMapService
 from django.template import RequestContext
 from models import Layers
-from django.contrib.auth.models import User
 from forms import LayersForm, TYPE_SOURCE, FIELD_TYPE
 from structure import LayerServices, LayerTable
-import psycopg2
-from userena import views
+from psycopg2 import connect
 from django.contrib.auth.decorators import login_required
 
 # voir http://docs.django-fr.org/intro/tutorial04.html#intro-tutorial04
@@ -52,17 +49,15 @@ def layer_delete(request, source_id):
 def layer_add(request):
     formSource = LayersForm(request.POST or None)
     if (request.method == 'POST'):
-       # print request.body
-        # le formulaire n'est pas valide
+        # form is not valid
         if (('save' in request.POST) and not (formSource.is_valid())):
-            # un enregistrement a ete demande
-            #print formSource.errors
+            # asked for a save
             return render(request, 
                 'layers/add.html',
                 {'formSource': formSource, 'error_message': True},
                 context_instance=RequestContext(request))
         if  ('EnvService' in request.POST):
-            # on reaffiche le service
+            # display again the service
             return getLayersForService(request, formSource)
         else:
             if('EnvBase' in request.POST):
@@ -83,7 +78,6 @@ def layer_add(request):
 def  saveLayersForService(request, formSource):
     """Save a layer from a service"""
     baliseLayer = 'layerSelected'
-    lstLayersString = ""
     lstLayersString = ";".join(
         request.POST.getlist(baliseLayer))
     currentSource = formSource.save(commit=False)
@@ -98,8 +92,6 @@ def getLayersForService(request, formSource):
     """Get a layer from a service with url.
     Recreate the form t take care of that"""
     name = None
-    lon = None
-    lat = None
     url = request.POST['url']
     wms = WebMapService(url, version='1.1.1')
     lstLayersService = []
@@ -126,7 +118,7 @@ Return the layers from an access to a database
     base = request.POST['base']
     userName = request.POST['username']
     password = request.POST['password']
-    connect = psycopg2.connect(
+    connect = connect(
         host=host, database=base, user=userName, port=port, password=password)
     lstLayersTable = []
     requestAllTables = \
@@ -146,11 +138,8 @@ Return the layers from an access to a database
         context_instance=RequestContext(request))
 
 
-# retourne les longitudes et latitude extremes a partir d'une url
 def computeLonLatLayer(url):
     """Get max and min latitudes and longitude from an url"""
-    lon = None
-    lat = None
     wms = WebMapService(url, version='1.1.1')
     lstLayers = list(wms.contents)
     lstLayers.remove(lstLayers[0])

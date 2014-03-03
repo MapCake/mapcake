@@ -10,7 +10,6 @@
 # into your database.
 
 from django.contrib.gis.db import models
-# from map.models import Maps
 from django.contrib.auth.models import User
 
 class Types(models.Model):
@@ -27,12 +26,11 @@ class Layers(models.Model):
     title = models.CharField(max_length=128, unique=True)
     source = models.TextField(blank=True)  # This field type is a guess.
     abstract = models.TextField(blank=True)
-    # Field name made lowercase. This field type is a guess.
     ddbuser = models.CharField(db_column='DDBuser', blank=True, max_length=128)
     password = models.CharField(blank=True, max_length=128)
     type = models.TextField(
         Types, null=True, db_column='type', blank=True)
-    # champ destine a contenir les urls des services
+    # field for the url of the service
     url = models.TextField(blank=True, db_column='url')
 
     createdby = models.ForeignKey(

@@ -1,10 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
-from django.conf.urls import *
 from django.contrib.auth import views as auth_views
 
 from accounts import views as userena_views
-#from userena import settings as userena_settings
 
 urlpatterns = patterns('',
     # Signup, signin and signout
